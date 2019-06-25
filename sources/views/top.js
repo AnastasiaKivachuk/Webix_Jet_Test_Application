@@ -1,5 +1,4 @@
 import {JetView, plugins} from "webix-jet";
-import HeaderView from "./header";
 
 export default class TopView extends JetView {
 	config() {

@@ -8,11 +8,10 @@ import {
 	Activity
 } from "../models/Activity";
 import {
-	contacts
+	Contacts
 } from "../models/contacts";
 
 export default class ActivityView extends JetView {
-
 	config() {
 		return {
 
@@ -55,10 +54,14 @@ export default class ActivityView extends JetView {
 					select: true,
 					columns: [
 						{id: "checkbox", header: "", template: "{common.checkbox()}", width: 50},
-						{id: "ActivityTypeId", editor: "select", header: ["Activity type", {content: "selectFilter"}], options: ActivityType, width: 200, sort: "string"},
-						{id: "DueDate", editor: "select", header: ["Due date", {content: "textFilter"}], width: 150, sort: "string"},
-						{id: "Details", header: ["Details", {content: "textFilter"}], width: 400, sort: "string"},
-						{id: "contactsId", editor: "select", header: ["Contact", {content: "selectFilter"}], options: contacts, width: 200, sort: "string"},
+						{id: "TypeID", editor: "select", header: ["Activity type", {content: "selectFilter"}], options: ActivityType, width: 300, sort: "string"},
+						{id: "DueDate", header: ["Due date"], width: 300},
+						// { id:"DueDate", format:webix.i18n.dateFormatStr, width:200, header:[
+						// 	"Deadline",
+						// 	{ content:"dateRangeFilter"}
+						//   ]},
+						{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true, sort: "string"},
+						{id: "ContactID", editor: "select", header: ["Contact", {content: "selectFilter"}], options: Contacts, width: 300, sort: "string"},
 						{template: "<span class='webix_icon wxi-pencil editBtn'></span>", width: 40},
 						{template: "<span class='webix_icon wxi-trash removeBtn'></span>", width: 40}
 					],
@@ -70,7 +73,8 @@ export default class ActivityView extends JetView {
 								() => {
 									Activity.remove(id);
 									return false;
-								})
+								}
+							);
 						}
 					}
 				}
@@ -81,7 +85,7 @@ export default class ActivityView extends JetView {
 	init() {
 		webix.promise.all([
 			Activity.waitData,
-			contacts.waitData,
+			Contacts.waitData,
 			ActivityType.waitData
 		]).then(
 			() => {

@@ -2,7 +2,7 @@ import {
 	JetView
 } from "webix-jet";
 import {
-	contacts
+	Contacts
 } from "../models/contacts";
 import {
 	statuses
@@ -57,12 +57,12 @@ export default class ContactInfoView extends JetView {
 
 
 	urlChange() {
-		contacts.waitData.then(() => {
+		Contacts.waitData.then(() => {
 			const id = this.getParam("id");
-			obj
-			if (id && contacts.exists(id)) {
-				this.$$("name").setValues(contacts.getItem(id));
-				this.$$("obj").setValues(contacts.getItem(id));
+			
+			if (id && Contacts.exists(id)) {
+				this.$$("name").setValues(Contacts.getItem(id));
+				this.$$("obj").setValues(Contacts.getItem(id));
 			} else {
 				this.$$("name").clear();
 				this.$$("obj").clear();
