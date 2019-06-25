@@ -67,9 +67,32 @@
     float: right;
   }
 
-.Skype{
-    background: url(https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwj6jubY9oPjAhVRl4sKHVvIDtcQjRx6BAgBEAU&url=https%3A%2F%2Fwww.sccpre.cat%2Fshow%2FhhwJRxw_png-file-skype-logo-icon%2F&psig=AOvVaw0X9xW2HqxaoKWym7vyiOAt&ust=1561527633774386)
+.leftColumn{
+    float: left;
 }
-.Email{
-    background: url(https://www.google.com/url?sa=i&source=images&cd=&ved=&url=https%3A%2F%2Fpngtree.com%2Ffreepng%2Femail-vector-icon_3876244.html&psig=AOvVaw1Cp1_3sRrNgp6_k5qNXbmr&ust=1561527929189894)
+
+.centerColumn{
+float: center;
+}
+
+.rightColumn{
+    float: right;
+    }
+
+.webix_item_tab{
+border: 5px black;
+border-radius: 5px;
+}
+
+.nameStyle{
+    font-size: 30px;
+
+}
+.removeBtn{
+    float: right;
+    padding: 0;
+}
+.editBtn, .removeBtn{
+    float: right;
+    padding: 0;
 }

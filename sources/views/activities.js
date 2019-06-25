@@ -1,88 +1,92 @@
 import {
 	JetView
 } from "webix-jet";
+import {
+	ActivityType
+} from "../models/ActivityType";
+import {
+	Activity
+} from "../models/Activity";
+import {
+	contacts
+} from "../models/contacts";
 
-export default class CommonData extends JetView {
+export default class ActivityView extends JetView {
 
 	config() {
 		return {
-			rows: [
-				// {
-			// 	view: "datatable",
-			// 	localId: "datatableCommon",
-			// 	editable: true,
-			// 	autoConfig: true,
-			// 	editaction: "dblclick",
-			// 	scroll: "auto",
-			// 	select: true
-			// },
-			// {
-			// 	view: "button",
-			// 	value: "Add new",
-			// 	click: () => {
-			// 		this._tdata.add({"Name":"NEW"});
-			// 		// this.$$("datatableCommon").add({});
-			// 	}
-			// },
-			// {
-			// 	view: "button",
-			// 	value: "Delete",
-			// 	click: () => {
-			// 		// let idS = this.$$("datatableCommon").getSelectedId();
-			// 		// if (idS) {
-			// 		// 	this.$$("datatableCommon").remove(idS);
-			// 		// }
-			// 		let idS = this.$$("datatableCommon").getSelectedId();
-			// 		if (idS) {
-			// 			this._tdata.remove(idS);
-			// 		}
-			// 	}
-			// }
-			{
-				view: "datatable",
-				id: "contactsData",
-				hover: "hoverLine",
-				autoConfig: true,
-				scrollX: false,
-				select: true,
-				columns:
-					[
-						{ id: "rank", header: "", width: 50, css: 'grayColumn', sort: "int" },
-						{ id: "title", header: ["Film title", { content: "textFilter" }], width: 200, sort: "string", fillspace: true },
-						{
-							id: "categotyId", header: ["Categoty", { content: "selectFilter" }],
-							editor: "select", options: collectionCategories, width: 100, sort: "string"
-						},
-						{ id: "votes", header: ["Votes", { content: "textFilter" }], width: 80, sort: "int" },
-						{ id: "rating", header: ["Rating", { content: "textFilter" }], width: 80, sort: "int" },
-						{ id: "year", header: ["Year"], width: 100, sort: "int" },
-						{ template: "<span class='webix_icon wxi-trash removeBtn'></span>" }
-					],
-				// scheme: {
-				// 	$init: function (obj) {
-				// 		obj.categotyId = Math.floor(Math.random() * 4 + 1);
-				// 		obj.votes = obj.votes.replace(",", ".");
-				// 		obj.rating = obj.rating.replace(",", ".");
-				// 	}
-				// },
 
-				// onClick: {
-				// 	removeBtn: function (e, id) {
-				// 		webix.confirm({
-				// 			text: "Do you still want to continue?"
-				// 		}).then(
-				// 			function () {
-				// 				$$("mydata").remove(id);
-				// 				return false;
-				// 			})
-				// 	}
-				// },
-			};
+			rows: [
+				{
+					cols: [
+						{
+							view: "tabbar",
+							id: "tabbar",
+							autodidth: true,
+							options:
+								[
+									{id: 1, value: "All"},
+									{id: 2, value: "Overdue"},
+									{id: 3, value: "Completed"},
+									{id: 4, value: "Today"},
+									{id: 5, value: "Tomorrow"},
+									{id: 6, value: "This week"},
+									{id: 7, value: "This month"}
+								]
+						},
+						{
+
+							view: "button",
+							type: "icon",
+							css: "webix_primary",
+							icon: "wxi-plus",
+							label: "Add activity",
+							autowidth: true,
+							click: () => { }
+
+						}]
+				},
+				{
+					view: "datatable",
+					localId: "contactsData",
+					hover: "hoverLine",
+					autoConfig: true,
+					scrollX: false,
+					select: true,
+					columns: [
+						{id: "checkbox", header: "", template: "{common.checkbox()}", width: 50},
+						{id: "ActivityTypeId", editor: "select", header: ["Activity type", {content: "selectFilter"}], options: ActivityType, width: 200, sort: "string"},
+						{id: "DueDate", editor: "select", header: ["Due date", {content: "textFilter"}], width: 150, sort: "string"},
+						{id: "Details", header: ["Details", {content: "textFilter"}], width: 400, sort: "string"},
+						{id: "contactsId", editor: "select", header: ["Contact", {content: "selectFilter"}], options: contacts, width: 200, sort: "string"},
+						{template: "<span class='webix_icon wxi-pencil editBtn'></span>", width: 40},
+						{template: "<span class='webix_icon wxi-trash removeBtn'></span>", width: 40}
+					],
+					onClick: {
+						removeBtn: (e, id) => {
+							webix.confirm({
+								text: "Do you still want to continue?"
+							}).then(
+								() => {
+									Activity.remove(id);
+									return false;
+								})
+						}
+					}
+				}
 			]
 		};
 	}
 
 	init() {
-		this.$$("datatableCommon").parse(this._tdata);
+		webix.promise.all([
+			Activity.waitData,
+			contacts.waitData,
+			ActivityType.waitData
+		]).then(
+			() => {
+				this.$$("contactsData").parse(Activity);
+			}
+		)
 	}
 }

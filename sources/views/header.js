@@ -1,4 +1,4 @@
-import {JetView, plugins} from "webix-jet";
+import {JetView} from "webix-jet";
 
 export default class HeaderView extends JetView {
 	config() {
