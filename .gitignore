@@ -1,5 +1,1 @@
-.idea/
-codebase/
-node_modules/
-*.log
-dist/
+node_modules
