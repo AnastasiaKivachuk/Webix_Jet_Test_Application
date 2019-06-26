@@ -20,7 +20,6 @@ export default class ContactInfoView extends JetView {
 							template: "#FirstName# #LastName#",
 							align: "left",
 							css: "nameStyle",
-							borderless: true,
 							localId: "name"
 						},
 						{
@@ -79,17 +78,17 @@ export default class ContactInfoView extends JetView {
 	getInfo(obj) {
 		return `
 		<div class="tempale">
-		<div class="centerColumn">
+		<div class="сolumn">
 		<img class=img src="${obj.Photo}"/>
 		<span class="status">${obj.statusStr}</span>
 		</div>
-		<div class="centerColumn">
+		<div class="сolumn">
 		<div class="line"><span class="mdi mdi-email item"></span>${obj.Email}</span></div>
 		<div class="line"><span class="mdi mdi-skype item></span><span class="item">${obj.Skype}</span></div>
 		<div class="line"><span class="mdi mdi-tag item"></span><span class="item">${obj.Job}</span></div>
 		<div class="line"><span class="mdi mdi-briefcase item"></span><span class="item">${obj.Company}</span></div>
 		</div>
-		<div class="centerColumn">
+		<div class="сolumn">
 		<div class="line"><span class="webix_icon mdi mdi-calendar item"></span><span class="item">${obj.Birthday}</span></div>
 		<div class="line"><span class="mdi mdi-map-marker item></span><span class="item">${obj.Address}</span></div>
 		</div>

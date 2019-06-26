@@ -77,22 +77,16 @@
 }
 
 
-.contactTitle {
-    background: blue;
-    color: white;
+.pageTitle {
     font-size: 25px;
+    text-align: center;
 }
 
 .removeUser {
     float: right;
 }
 
-.leftColumn {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.centerColumn {
+.сolumn {
     display: flex;
     flex-direction: column;
     margin-right: 30px;
@@ -145,7 +139,9 @@
 }
 
 .nameStyle {
-    font-size: 30px;
+    font-size: 20px;
+    border-bottom: 0;
+    border-right: 0;
 
 }
 
@@ -166,7 +162,7 @@
 
 .contactName,
 .contactJob {
-    font-size: 12px;
+    font-size: 18px;
     display: block;
     margin-left: 12px;
 }

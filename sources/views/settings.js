@@ -5,17 +5,8 @@ import {
 export default class SettingsView extends JetView {
 	config() {
 		return {
-			rows: [
-				{
-					view: "template",
-					css: "contactTitle",
-					autoheight: true,
-					template: "Settings",
-					align: "center"
-				}
-
-			],
-		}
-
-	};
+			view: "template",
+			template: "Settings"
+		};
+	}
 }

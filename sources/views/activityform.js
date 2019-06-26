@@ -7,6 +7,9 @@ import {
 import {
 	Contacts
 } from "../models/contacts";
+import {
+	Activity
+} from "../models/Activity";
 
 export default class ActivityForm extends JetView {
 	config() {
@@ -16,83 +19,101 @@ export default class ActivityForm extends JetView {
 			width: 600,
 			position: "center",
 			modal: true,
-			head: "Add activity",
+			head: {
+				view: "label",
+				localId: "headForm",
+				align: "center"
+			},
 			body: {
 				view: "form",
 				localId: "form",
 				borderless: true,
-				elements: [
-					{
-						rows: [
-							{
-								view: "textarea",
-								label: "Details",
-								labelAlign: "right"
-							},
-							{
-								view: "richselect",
-								label: "Type",
-								options: {
-									body: {
-										template: "#Value#",
-										data: ActivityType
+				elements: [{
+					rows: [{
+							view: "textarea",
+							name: "Details",
+							label: "Details",
+							labelAlign: "right",
+							invalidMessage: "Please write details"
+						},
+						{
+							view: "richselect",
+							label: "Type",
+							name: "TypeID",
+							invalidMessage: "Please select a type",
+							options: {
+								body: {
+									template: "#Value#",
+									data: ActivityType
 
-									}
 								}
-							},
-							{
-								view: "richselect",
-								label: "Contact",
-								options: {
-									body: {
-										template: "#FirstName# #LastName#",
-										data: Contacts
-
-									}
-								}
-							},
-							{
-								cols: [
-									{
-										view: "datepicker",
-										date: new Date(2012, 6, 8),
-										label: "Date",
-										name: "Date"
-									},
-									{
-										view: "datepicker",
-										date: new Date(2018, 6, 1, 8, 30),
-										label: "Time",
-										name: "Time",
-										timepicker: true,
-										type: "time"
-									}
-								]
-							},
-							{
-								cols: [
-									{
-										view: "button",
-										value: "Add"
-										// click: function() {
-										//     if (this.getParentView().validate()) { //validate form
-										//         webix.message("All is correct");
-										//         this.getTopParentView().hide(); //hide window
-										//     } else
-										//         webix.message({ type: "error", text: "Form data is invalid" });
-										// }
-									},
-									{
-										view: "button",
-										value: "Cansel",
-										click: () => {
-											this.$$("windowForm").close();
-										}
-									}]
 							}
-						]
-					}
-				],
+						},
+						{
+							view: "richselect",
+							label: "Contact",
+							name: "ContactID",
+							invalidMessage: "Please select a contact",
+							options: {
+								body: {
+									template: "#FirstName# #LastName#",
+									data: Contacts
+
+								}
+							}
+						},
+						{
+							cols: [{
+									view: "datepicker",
+									label: "Date",
+									name: "DueDate",
+									invalidMessage: "Please select a date"
+								},
+								{
+									view: "datepicker",
+									label: "Time",
+									name: "NewTime",
+									timepicker: true,
+									type: "time",
+									invalidMessage: "Please select time"
+								}
+							]
+						},
+						{
+							view: "checkbox",
+							label: "Completed",
+							name: "checkbox"
+						},
+						{
+							cols: [{
+									view: "button",
+									localId: "addBtn",
+									value: "Save",
+									click: () => {
+										let formValue = this.$$("form").getValues();
+										console.log(formValue);
+										if (this.$$("form").validate()) {
+											if (formValue.id) {
+												Activity.updateItem(formValue.id, formValue);
+											} else {
+												Activity.add(formValue);
+											}
+											this.$$("form").clearValidation();
+											this.closeForm();
+										}
+									}
+								},
+								{
+									view: "button",
+									value: "Cansel",
+									click: () => {
+										this.closeForm();
+									}
+								}
+							]
+						}
+					]
+				}],
 				rules: {
 					$all: webix.rules.isNotEmpty
 				}
@@ -100,10 +121,17 @@ export default class ActivityForm extends JetView {
 		};
 	}
 
-	showForm(data) {
+	showForm(data, mode) {
 		this.getRoot().show();
 		if (data) {
 			this.$$("form").setValues(data);
 		}
+		if (mode) {
+			this.$$("headForm").setValue(`${mode} activity`);
+		}
+	}
+
+	closeForm() {
+		this.getRoot().hide();
 	}
 }
