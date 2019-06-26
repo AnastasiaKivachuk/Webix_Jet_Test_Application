@@ -66,13 +66,13 @@ export default class ActivityForm extends JetView {
 							cols: [{
 									view: "datepicker",
 									label: "Date",
-									name: "DueDate",
+									name: "DueNewDate",
 									invalidMessage: "Please select a date"
 								},
 								{
 									view: "datepicker",
 									label: "Time",
-									name: "NewTime",
+									name: "DueTime",
 									timepicker: true,
 									type: "time",
 									invalidMessage: "Please select time"

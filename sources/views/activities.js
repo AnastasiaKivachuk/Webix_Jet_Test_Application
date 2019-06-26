@@ -92,7 +92,7 @@ export default class ActivityView extends JetView {
 					sort: "string"
 				},
 				{
-					id: "DueDate",
+					id: "DueNewDate",
 					format: webix.i18n.longDateFormatStr,
 					header: ["Due date", {
 						content: "dateRangeFilter"
