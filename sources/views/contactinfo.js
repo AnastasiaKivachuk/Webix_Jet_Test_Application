@@ -64,11 +64,10 @@ export default class ContactInfoView extends JetView {
 		]).then(() => {
 			const id = this.getParam("id");
 			if (id && Contacts.exists(id)) {
-				Contacts.getItem(id).StatusID = Statuses.getItem(Contacts.getItem(id).StatusID).Value;
-
+				const values = Contacts.getItem(id);
+				values.statusStr = Statuses.getItem(values.StatusID).Value;
 				this.$$("name").setValues(Contacts.getItem(id));
 				this.$$("infoContact").setValues(Contacts.getItem(id));
-				console.log(Contacts.getItem(id).StatusID);
 			}
 			// else {
 			// 	this.$$("name").clear();
@@ -81,8 +80,8 @@ export default class ContactInfoView extends JetView {
 		return `
 		<div class="tempale">
 		<div class="centerColumn">
-		<img class=img />
-		<span class="status">${obj.Value}</span>
+		<img class=img src="${obj.Photo}"/>
+		<span class="status">${obj.statusStr}</span>
 		</div>
 		<div class="centerColumn">
 		<div class="line"><span class="mdi mdi-email item"></span>${obj.Email}</span></div>
@@ -92,7 +91,7 @@ export default class ContactInfoView extends JetView {
 		</div>
 		<div class="centerColumn">
 		<div class="line"><span class="webix_icon mdi mdi-calendar item"></span><span class="item">${obj.Birthday}</span></div>
-		<div class="line"><span class="mdi mdi-map-marker item></span><span class="item">${obj.Adress}</span></div>
+		<div class="line"><span class="mdi mdi-map-marker item></span><span class="item">${obj.Address}</span></div>
 		</div>
 		</div>`;
 	}

@@ -16,11 +16,13 @@ export default class ContactView extends JetView {
 						{
 							view: "list",
 							localId: "contactList",
-							autoConfig: true,
 							width: 300,
 							css: "webix_shadow_medium",
 							select: true,
-							template: "<div class='contactItem'><span class='top'>#FirstName# #LastName#</span><span class='top'> #Company#</span></div>",
+							template: this.getUser,
+							type: {
+								height: 60
+							},
 							on: {
 								onAfterSelect: (id) => {
 									this.setParam("id", id, true);
@@ -35,9 +37,9 @@ export default class ContactView extends JetView {
 	}
 
 
-	init(view) {
+	init() {
 		Contacts.waitData.then(() => {
-			view.queryView("list").sync(Contacts);
+			this.$$("contactList").sync(Contacts);
 		});
 	}
 
@@ -54,5 +56,16 @@ export default class ContactView extends JetView {
 				list.select(id);
 			}
 		});
+	}
+
+	getUser(obj) {
+		return `<div class='contactItem'>
+					<image class="littleImg" src="${obj.Photo}" /> 
+					<div class="contactInfo">
+						<span class="contactName">${obj.FirstName} ${obj.LastName}</span>
+						<span class="contactJob">${obj.Job}</span>
+					</div>
+					</div>
+					`;
 	}
 }

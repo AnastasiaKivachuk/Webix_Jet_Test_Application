@@ -10,6 +10,7 @@ import {
 import {
 	Contacts
 } from "../models/contacts";
+import ActivityForm from "./activityform";
 
 export default class ActivityView extends JetView {
 	config() {
@@ -22,16 +23,15 @@ export default class ActivityView extends JetView {
 							view: "tabbar",
 							id: "tabbar",
 							autodidth: true,
-							options:
-								[
-									{id: 1, value: "All"},
-									{id: 2, value: "Overdue"},
-									{id: 3, value: "Completed"},
-									{id: 4, value: "Today"},
-									{id: 5, value: "Tomorrow"},
-									{id: 6, value: "This week"},
-									{id: 7, value: "This month"}
-								]
+							options: [
+								{id: 1, value: "All"},
+								{id: 2, value: "Overdue"},
+								{id: 3, value: "Completed"},
+								{id: 4, value: "Today"},
+								{id: 5, value: "Tomorrow"},
+								{id: 6, value: "This week"},
+								{id: 7, value: "This month"}
+							]
 						},
 						{
 
@@ -41,9 +41,12 @@ export default class ActivityView extends JetView {
 							icon: "wxi-plus",
 							label: "Add activity",
 							autowidth: true,
-							click: () => { }
+							click: () => {
+								this.form.showForm("");
+							}
 
-						}]
+						}
+					]
 				},
 				{
 					view: "datatable",
@@ -55,18 +58,14 @@ export default class ActivityView extends JetView {
 					columns: [
 						{id: "checkbox", header: "", template: "{common.checkbox()}", width: 50},
 						{id: "TypeID", editor: "select", header: ["Activity type", {content: "selectFilter"}], options: ActivityType, width: 300, sort: "string"},
-						{id: "DueDate", format:webix.i18n.dateFormatStr, header: ["Due date", { content:"dateRangeFilter"}], width: 300},
-						// { id:"DueDate", format:webix.i18n.dateFormatStr, width:200, header:[
-						// 	"Deadline",
-						// 	{ content:"dateRangeFilter"}
-						//   ]},
+						{id: "DueDate", format: webix.i18n.dateFormatStr, header: ["Due date", {content: "dateRangeFilter"}], width: 300},
 						{id: "Details", header: ["Details", {content: "textFilter"}], fillspace: true, sort: "string"},
 						{id: "ContactID", editor: "select", header: ["Contact", {content: "selectFilter"}], options: Contacts, width: 300, sort: "string"},
 						{template: "<span class='webix_icon wxi-pencil editBtn'></span>", width: 40},
 						{template: "<span class='webix_icon wxi-trash removeBtn'></span>", width: 40}
 					],
 					onClick: {
-						removeBtn: (e, id) => {
+						removeBtn: (id) => {
 							webix.confirm({
 								text: "Do you still want to continue?"
 							}).then(
@@ -76,6 +75,11 @@ export default class ActivityView extends JetView {
 								}
 							);
 						}
+					},
+					click: {
+						editBtn: (id) => {
+							this.form.showForm(Activity.add(id));
+						}
 					}
 				}
 			]
@@ -83,6 +87,7 @@ export default class ActivityView extends JetView {
 	}
 
 	init() {
+		this.form = this.ui(ActivityForm);
 		webix.promise.all([
 			Activity.waitData,
 			Contacts.waitData,
@@ -91,6 +96,6 @@ export default class ActivityView extends JetView {
 			() => {
 				this.$$("contactsData").parse(Activity);
 			}
-		)
+		);
 	}
 }

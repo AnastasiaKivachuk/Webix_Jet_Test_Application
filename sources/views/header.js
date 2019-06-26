@@ -32,6 +32,4 @@ export default class HeaderView extends JetView {
 
 		return ui;
 	}
-
-
 }
