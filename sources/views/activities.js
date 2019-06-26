@@ -55,7 +55,7 @@ export default class ActivityView extends JetView {
 					columns: [
 						{id: "checkbox", header: "", template: "{common.checkbox()}", width: 50},
 						{id: "TypeID", editor: "select", header: ["Activity type", {content: "selectFilter"}], options: ActivityType, width: 300, sort: "string"},
-						{id: "DueDate", header: ["Due date"], width: 300},
+						{id: "DueDate", format:webix.i18n.dateFormatStr, header: ["Due date", { content:"dateRangeFilter"}], width: 300},
 						// { id:"DueDate", format:webix.i18n.dateFormatStr, width:200, header:[
 						// 	"Deadline",
 						// 	{ content:"dateRangeFilter"}
