@@ -5,14 +5,25 @@ import {
 	Contacts
 } from "../models/contacts";
 import ContactInfoView from "./contactinfo";
+import ContactFromView from "./contactform";
 
 
 export default class ContactView extends JetView {
 	config() {
+		// this.$$("listInput").attachEvent("onTimedKeyPress", () => {
+		// 	let value = this.getValue().toLowerCase();
+		// 	this.$$("list").filter(obj => obj.title.toLowerCase().indexOf(value) !== -1);
+		// });
+
 		return {
 			cols: [
 				{
 					rows: [
+						{
+							view: "text",
+							id: "listInput",
+							css: "fltr"
+						},
 						{
 							view: "list",
 							localId: "contactList",
@@ -28,10 +39,20 @@ export default class ContactView extends JetView {
 									this.setParam("id", id, true);
 								}
 							}
+						},
+						{
+							view: "button",
+							type: "icon",
+							css: "webix_primary",
+							icon: "wxi-plus",
+							label: "Add contact",
+							click: () => {
+							}
 						}
 					]
 				},
-				ContactInfoView
+				// ContactInfoView
+				ContactFromView
 			]
 		};
 	}
