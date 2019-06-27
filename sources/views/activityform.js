@@ -28,64 +28,69 @@ export default class ActivityForm extends JetView {
 				view: "form",
 				localId: "form",
 				borderless: true,
-				elements: [{
-					rows: [{
-							view: "textarea",
-							name: "Details",
-							label: "Details",
-							labelAlign: "right",
-							invalidMessage: "Please write details"
-						},
-						{
-							view: "richselect",
-							label: "Type",
-							name: "TypeID",
-							invalidMessage: "Please select a type",
-							options: {
-								body: {
-									template: "#Value#",
-									data: ActivityType
+				elements: [
+					{
+						rows: [
+							{
+								view: "textarea",
+								name: "Details",
+								label: "Details",
+								labelAlign: "right",
+								invalidMessage: "Please write details"
+							},
+							{
+								view: "richselect",
+								label: "Type",
+								name: "TypeID",
+								invalidMessage: "Please select a type",
+								options: {
+									body: {
+										template: "#Value#",
+										data: ActivityType
 
+									}
 								}
-							}
-						},
-						{
-							view: "richselect",
-							label: "Contact",
-							name: "ContactID",
-							invalidMessage: "Please select a contact",
-							options: {
-								body: {
-									template: "#FirstName# #LastName#",
-									data: Contacts
+							},
+							{
+								view: "richselect",
+								label: "Contact",
+								name: "ContactID",
+								invalidMessage: "Please select a contact",
+								options: {
+									body: {
+										template: "#FirstName# #LastName#",
+										data: Contacts
 
+									}
 								}
-							}
-						},
-						{
-							cols: [{
-									view: "datepicker",
-									label: "Date",
-									name: "DueNewDate",
-									invalidMessage: "Please select a date"
-								},
-								{
-									view: "datepicker",
-									label: "Time",
-									name: "DueTime",
-									timepicker: true,
-									type: "time",
-									invalidMessage: "Please select time"
-								}
-							]
-						},
-						{
-							view: "checkbox",
-							label: "Completed",
-							name: "checkbox"
-						},
-						{
-							cols: [{
+							},
+							{
+								cols: [
+									{
+										view: "datepicker",
+										label: "Date",
+										format: "%d %M %Y",
+										name: "DueNewDate",
+										invalidMessage: "Please select a date"
+									},
+									{
+										view: "datepicker",
+										label: "Time",
+										format: "%H:%i",
+										name: "DueNewTime",
+										timepicker: true,
+										type: "time",
+										invalidMessage: "Please select time"
+									}
+								]
+							},
+							{
+								view: "checkbox",
+								label: "Completed",
+								name: "checkbox"
+							},
+							{
+								cols: [{
 									view: "button",
 									localId: "addBtn",
 									value: "Save",
@@ -95,7 +100,8 @@ export default class ActivityForm extends JetView {
 										if (this.$$("form").validate()) {
 											if (formValue.id) {
 												Activity.updateItem(formValue.id, formValue);
-											} else {
+											}
+											else {
 												Activity.add(formValue);
 											}
 											this.$$("form").clearValidation();
@@ -110,10 +116,10 @@ export default class ActivityForm extends JetView {
 										this.closeForm();
 									}
 								}
-							]
-						}
-					]
-				}],
+								]
+							}
+						]
+					}],
 				rules: {
 					$all: webix.rules.isNotEmpty
 				}
