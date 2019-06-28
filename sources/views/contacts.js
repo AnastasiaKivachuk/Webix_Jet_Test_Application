@@ -22,7 +22,20 @@ export default class ContactView extends JetView {
 						{
 							view: "text",
 							id: "listInput",
-							css: "listInput"
+							placeholder: "Type something here",
+							on: {
+								onTimedKeyPress: () => {
+									// let value = this.getValue().toLowerCase();
+									this.$$("contactList").filter((obj) => 
+									// 	obj.FirstName.toLowerCase().indexOf(value) !== -1 ||
+									// obj.LastName.toLowerCase().indexOf(value) !== -1
+									{
+										if (equals(obj.FirstName, text)) return true;
+										if (equals(obj.LastName, text)) return true;
+									}
+									)
+								}
+							}
 						},
 						{
 							view: "list",
@@ -52,8 +65,8 @@ export default class ContactView extends JetView {
 						}
 					]
 				},
-				ContactInfoView
-				// ContactFromView
+				// ContactInfoView
+				ContactFromView
 			]
 		};
 	}
@@ -78,6 +91,11 @@ export default class ContactView extends JetView {
 				list.select(id);
 			}
 		});
+	}
+
+	equals(a, b) {
+		a = a.toString().toLowerCase();
+		return a.indexOf(b) !== -1;
 	}
 
 	getUser(obj) {

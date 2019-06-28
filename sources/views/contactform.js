@@ -24,7 +24,12 @@ export default class ContactFromView extends JetView {
 				localId: "myform",
 				borderless: true,
 				elements: [{
+					paddingY: 50,
 					cols: [{
+						width: 500,
+						margin: 10,
+						paddingX: 60,
+						borderless: true,
 						rows: [{
 							view: "text",
 							label: "First Name",
@@ -84,12 +89,12 @@ export default class ContactFromView extends JetView {
 						}
 						]
 					},
+					{},
 					{
-						view: "template",
-						width: 50,
-						borderless: true
-					},
-					{
+						width: 500,
+						margin: 10,
+						paddingX: 60,
+						borderless: true,
 						rows: [{
 							view: "text",
 							label: "Email",
@@ -116,20 +121,54 @@ export default class ContactFromView extends JetView {
 							invalidMessage: "Please select a date"
 						},
 						{
-							view: "uploader",
-							value: "Upload file",
-							id: "Photo",
-							name: "records",
-							// link: "mylist",
-							upload: "http://localhost:8096/api/v1/contacts/"
+							cols: [
+								{
+									view: "template",
+									// template: <img class="img", src="" />,
+									css: "img",
+									height: 100,
+									width: 100,
+									template: "Photo"
+									// "<img class="img", src="" />"
+								},
+								{
+									rows:
+										[
+											{
+												view: "uploader",
+												value: "Upload file",
+												id: "Photo",
+												name: "records",
+												autowidth: true,
+												// link: "mylist",
+												upload: "http://localhost:8096/api/v1/contacts/"
+											},
+											{
+												view: "button",
+												css: "webix_primary btnStyle",
+												label: "Delete",
+												autowidth: true,
+												click: () => { }
+											}
+										]
+								}
+
+							]
 						}
+							// {
+							// 	view: "uploader",
+							// 	value: "Upload file",
+							// 	id: "Photo",
+							// 	name: "records",
+							// 	// link: "mylist",
+							// 	upload: "http://localhost:8096/api/v1/contacts/"
+							// }
 
 						]
 					}
 
 					]
 				},
-				{},
 				{
 					cols: [{},
 						{
@@ -138,11 +177,11 @@ export default class ContactFromView extends JetView {
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {
-								// let form = this.$$("myform");
-								// if (form.isDirty()) {
-								// 	if (!form.validate()) { return false; }
-								// 	let changed = this.$$("myform").getDirtyValues();
-								// 	contacts.updateItem(this.getParam("id"), changed);
+							// let form = this.$$("myform");
+							// if (form.isDirty()) {
+							// 	if (!form.validate()) { return false; }
+							// 	let changed = this.$$("myform").getDirtyValues();
+							// 	contacts.updateItem(this.getParam("id"), changed);
 							}
 						},
 						{
@@ -151,24 +190,15 @@ export default class ContactFromView extends JetView {
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {
-								let formValue = this.$$("myform")
-									.getValues();
-								console.log(formValue);
-								console.log(formValue.id);
-								if (this.$$("myform")
-									.validate()) {
+								let formValue = this.$$("myform").getValues();
+								if (this.$$("myform").validate()) {
 									if (formValue.id) {
-										Contacts.updateItem(
-											formValue.id,
-											formValue
-										);
+										Contacts.updateItem(formValue.id, formValue);
 									}
 									else {
 										Contacts.add(formValue);
 									}
-									this.$$("myform")
-										.clearValidation();
-									// this.closeForm();
+								// this.closeForm();
 								}
 							}
 						}
@@ -177,8 +207,17 @@ export default class ContactFromView extends JetView {
 
 				],
 				rules: {
-					$all: webix.rules.isNotEmpty,
-					Email: webix.rules.isEmail
+					FirstName: webix.rules.isNotEmpty,
+					LastName: webix.rules.isNotEmpty,
+					newStartDate: webix.rules.isNotEmpty,
+					StatusID: webix.rules.isNotEmpty,
+					Job: webix.rules.isNotEmpty,
+					Company: webix.rules.isNotEmpty,
+					Website: webix.rules.isNotEmpty,
+					Email: webix.rules.isEmail,
+					Skype: webix.rules.isNotEmpty,
+					Phone: webix.rules.isNotEmpty,
+					newBirthday: webix.rules.isNotEmpty
 				}
 
 
@@ -199,6 +238,7 @@ export default class ContactFromView extends JetView {
 			}
 			else {
 				this.$$("myform").clear();
+				this.$$("myform").clearValidation();
 			}
 		});
 	}

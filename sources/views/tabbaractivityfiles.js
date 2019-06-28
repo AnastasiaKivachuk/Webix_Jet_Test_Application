@@ -94,10 +94,7 @@ export default class TabbarActivityFiles extends JetView {
 								this.form.showForm(Activity.getItem(id),
 									"Edit");
 							}
-						},
-
-
-
+						}
 					},
 					{
 						view: "button",
@@ -125,7 +122,7 @@ export default class TabbarActivityFiles extends JetView {
 	init() {
 		this.form = this.ui(ActivityForm);
 		webix.promise.all([
-			Activity.waitData,
+			Activity.waitData
 		]).then(
 			() => {
 				webix.$$("activities").parse(Activity);

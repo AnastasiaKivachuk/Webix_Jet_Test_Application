@@ -96,7 +96,6 @@ export default class ActivityForm extends JetView {
 									value: "Save",
 									click: () => {
 										let formValue = this.$$("form").getValues();
-										console.log(formValue);
 										if (this.$$("form").validate()) {
 											if (formValue.id) {
 												Activity.updateItem(formValue.id, formValue);
