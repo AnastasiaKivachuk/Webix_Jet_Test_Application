@@ -128,6 +128,7 @@ export default class ActivityForm extends JetView {
 	}
 
 	closeForm() {
+		this.$$("form").clear();
 		this.$$("form").clearValidation();
 		this.getRoot().hide();
 	}
