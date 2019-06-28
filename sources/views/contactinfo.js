@@ -7,6 +7,7 @@ import {
 import {
 	Statuses
 } from "../models/statuses";
+import TabbarActivityFiles from "./tabbaractivityfiles";
 
 export default class ContactInfoView extends JetView {
 	config() {
@@ -50,7 +51,8 @@ export default class ContactInfoView extends JetView {
 					css: "contact-info",
 					localId: "infoContact"
 				},
-				{}
+				{},
+				TabbarActivityFiles
 			]
 		};
 	}

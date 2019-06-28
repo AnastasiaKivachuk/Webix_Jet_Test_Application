@@ -17,4 +17,5 @@ export const Activity = new webix.DataCollection({
 			obj.DueDate = dateForatting(obj.DueDate);
 			obj.DueNewDate = new Date(obj.DueDate);
 		}
-	}});
+	}
+});

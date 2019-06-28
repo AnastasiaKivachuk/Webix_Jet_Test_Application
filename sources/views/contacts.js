@@ -22,7 +22,7 @@ export default class ContactView extends JetView {
 						{
 							view: "text",
 							id: "listInput",
-							css: "fltr"
+							css: "listInput"
 						},
 						{
 							view: "list",
@@ -47,12 +47,13 @@ export default class ContactView extends JetView {
 							icon: "wxi-plus",
 							label: "Add contact",
 							click: () => {
+
 							}
 						}
 					]
 				},
-				// ContactInfoView
-				ContactFromView
+				ContactInfoView
+				// ContactFromView
 			]
 		};
 	}
@@ -81,7 +82,7 @@ export default class ContactView extends JetView {
 
 	getUser(obj) {
 		return `<div class='contactItem'>
-					<image class="littleImg" src="${obj.Photo}" /> 
+					<image class="littleImg" src="${obj.Photo}" />
 					<div class="contactInfo">
 						<span class="contactName">${obj.FirstName} ${obj.LastName}</span>
 						<span class="contactJob">${obj.Job}</span>

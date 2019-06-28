@@ -172,3 +172,8 @@
     flex-direction: column;
     justify-items: flex-start;
 }
+
+
+.listInput{
+    placeholder: "type to find matching contacts";
+}
