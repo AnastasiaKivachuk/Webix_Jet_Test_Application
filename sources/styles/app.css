@@ -1,0 +1,146 @@
+.webixappstart {
+    opacity: 0;
+}
+
+.webixapp {
+    transition: opacity 500ms;
+    opacity: 1;
+}
+
+/*data loading status*/
+.status_good,
+.status_error,
+.status_saving {
+    text-align: center;
+    margin-left: -12px;
+}
+
+.status_error {
+    color: red;
+}
+
+.status_good {
+    color: green;
+}
+
+/*login form*/
+.invalid_login .webix_header>div {
+    background: #FC3636;
+    transition: background 1s;
+}
+
+
+
+.app_header.webix_header {
+    text-align: center;
+}
+
+.app_layout.webix_layout_clean {
+    background: #EBEDF0;
+}
+
+.app_start .webix_template {
+    padding: 12px 12px;
+}
+
+.app_menu .webix_icon {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+
+.pageTitle {
+    font-size: 25px;
+    text-align: center;
+}
+
+.removeUser {
+    float: right;
+}
+
+.сolumn {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+    margin-top: 15px;
+
+}
+
+.tempale {
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.item {
+    display: flex;
+    justify-content: flex-start;
+    width: auto;
+    margin-right: 5px;
+}
+
+.line {
+    margin: 10px 30px 10px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.img {
+    margin: 0 30px 0 20px;
+    width: 130px;
+    height: 130px;
+    border: 1px black;
+    border-radius: 50%;
+}
+
+.littleImg {
+    width: 30px;
+    height: 30px;
+    border: 1px black;
+    border-radius: 50%;
+}
+
+.status {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.webix_item_tab {
+    border: 5px black;
+    border-radius: 5px;
+}
+
+.nameStyle {
+    font-size: 20px;
+    border-bottom: 0;
+    border-right: 0;
+
+}
+
+.btnStyle {
+    border-radius: 10px;
+}
+
+.editBtn,
+.removeBtn {
+    float: right;
+    padding: 0;
+}
+
+.contactItem {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.contactName,
+.contactJob {
+    font-size: 18px;
+    display: block;
+    margin-left: 12px;
+}
+
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+}
