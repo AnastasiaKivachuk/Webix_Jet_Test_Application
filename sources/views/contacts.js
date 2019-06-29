@@ -16,57 +16,66 @@ export default class ContactView extends JetView {
 		// });
 
 		return {
-			cols: [
-				{
-					rows: [
-						{
-							view: "text",
-							id: "listInput",
-							placeholder: "Type something here",
-							on: {
-								onTimedKeyPress: () => {
-									// let value = this.getValue().toLowerCase();
-									this.$$("contactList").filter((obj) => 
-									// 	obj.FirstName.toLowerCase().indexOf(value) !== -1 ||
-									// obj.LastName.toLowerCase().indexOf(value) !== -1
-									{
-										if (equals(obj.FirstName, text)) return true;
-										if (equals(obj.LastName, text)) return true;
-									}
-									)
-								}
-							}
-						},
-						{
-							view: "list",
-							localId: "contactList",
-							width: 300,
-							css: "webix_shadow_medium",
-							select: true,
-							template: this.getUser,
-							type: {
-								height: 60
-							},
-							on: {
-								onAfterSelect: (id) => {
-									this.setParam("id", id, true);
-								}
-							}
-						},
-						{
-							view: "button",
-							type: "icon",
-							css: "webix_primary",
-							icon: "wxi-plus",
-							label: "Add contact",
-							click: () => {
-
-							}
+			cols: [{
+				rows: [{
+					view: "text",
+					id: "listInput",
+					placeholder: "Type something here",
+					on: {
+						onTimedKeyPress: () => {
+							// function equals(a, b) {
+							// 	a = a.toString().toLowerCase();
+							// 	return a.indexOf(b) !== -1;
+							// }
+							// let valueInput = this.getValue().toLowerCase();
+							// // let value = this.getValue().toLowerCase();
+							// this.$$("contactList").filter((obj) =>
+							// // 	obj.FirstName.toLowerCase().indexOf(value) !== -1 ||
+							// // obj.LastName.toLowerCase().indexOf(value) !== -1
+							// {
+							// 	// if (equals(obj.FirstName, text))
+							// 	// 	return true;
+							// 	// if (equals(obj.LastName, text))
+							// 	// 	return true;
+							// 	// if (equals(obj.Job, text)) { return true; }
+							// 	// if (equals(obj.FirstName, text)) { return true; }
+							// 	// if (equals(obj.LastName, text)) { return true; }
+							// 	// return false;
+							// 	(obj.Job, text).toLowerCase().indexOf(valueInput) !== -1;
+							// })
 						}
-					]
+					}
 				},
-				// ContactInfoView
-				ContactFromView
+				{
+					view: "list",
+					localId: "contactList",
+					width: 300,
+					css: "webix_shadow_medium",
+					select: true,
+					template: this.getUser,
+					type: {
+						height: 60
+					},
+					on: {
+						onAfterSelect: (id) => {
+							this.setParam("id", id, true);
+						}
+					}
+				},
+				{
+					view: "button",
+					type: "icon",
+					css: "webix_primary",
+					icon: "wxi-plus",
+					label: "Add contact",
+					click: () => {
+
+					}
+				}
+				]
+			},
+			// ContactInfoView
+			ContactFromView
 			]
 		};
 	}
@@ -93,10 +102,6 @@ export default class ContactView extends JetView {
 		});
 	}
 
-	equals(a, b) {
-		a = a.toString().toLowerCase();
-		return a.indexOf(b) !== -1;
-	}
 
 	getUser(obj) {
 		return `<div class='contactItem'>
