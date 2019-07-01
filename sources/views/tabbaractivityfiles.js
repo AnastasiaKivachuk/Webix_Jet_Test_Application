@@ -99,7 +99,6 @@ export default class TabbarActivityFiles extends JetView {
 								return false;
 							},
 							editBtn: (el, id) => {
-								console.log(Activity.getItem(id));
 								this.form.showForm(Activity.getItem(id),
 									"Edit");
 							}
