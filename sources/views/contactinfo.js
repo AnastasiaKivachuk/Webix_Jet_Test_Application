@@ -51,7 +51,6 @@ export default class ContactInfoView extends JetView {
 					css: "contact-info",
 					localId: "infoContact"
 				},
-				{},
 				TabbarActivityFiles
 			]
 		};

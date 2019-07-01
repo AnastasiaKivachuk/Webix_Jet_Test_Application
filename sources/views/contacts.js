@@ -19,7 +19,7 @@ export default class ContactView extends JetView {
 			cols: [{
 				rows: [{
 					view: "text",
-					id: "listInput",
+					locald: "listInput",
 					placeholder: "Type something here",
 					on: {
 						onTimedKeyPress: () => {
@@ -74,8 +74,8 @@ export default class ContactView extends JetView {
 				}
 				]
 			},
-			// ContactInfoView
-			ContactFromView
+			ContactInfoView
+			// ContactFromView
 			]
 		};
 	}

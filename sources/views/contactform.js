@@ -121,37 +121,52 @@ export default class ContactFromView extends JetView {
 							invalidMessage: "Please select a date"
 						},
 						{
-							cols: [
-								{
-									view: "template",
-									// template: <img class="img", src="" />,
-									css: "img",
-									height: 100,
-									width: 100,
-									template: "Photo"
-									// "<img class="img", src="" />"
+							cols: [{
+								view: "template",
+								localId: "preview",
+								template: obj => `<image class="imgForm" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" />`,
+								height: 100,
+								width: 100,
+								borderless: true
+							},
+							{
+								rows: [{
+									view: "uploader",
+									accept: "image/jpeg, image/png",
+									value: "Upload file",
+									id: "Photo",
+									name: "records",
+									autowidth: true,
+									on: {
+										onBeforeFileAdd: (upload) => {
+											let file = upload.file;
+											let reader = new FileReader();
+											reader.onload = (event) => {
+												// console.log(event.target.result);
+												this.$$("preview").getBody().setValues({
+													src: event.target.result
+												});
+												this.$$("preview").show();
+											};
+											reader
+												.readAsDataURL(
+													file
+												);
+											return false;
+										}
+									},
+									// link: "mylist",
+									upload: "http://localhost:8096/api/v1/contacts/"
 								},
 								{
-									rows:
-										[
-											{
-												view: "uploader",
-												value: "Upload file",
-												id: "Photo",
-												name: "records",
-												autowidth: true,
-												// link: "mylist",
-												upload: "http://localhost:8096/api/v1/contacts/"
-											},
-											{
-												view: "button",
-												css: "webix_primary btnStyle",
-												label: "Delete",
-												autowidth: true,
-												click: () => { }
-											}
-										]
+									view: "button",
+									css: "webix_primary btnStyle",
+									label: "Delete",
+									autowidth: true,
+									click: () => {}
 								}
+								]
+							}
 
 							]
 						}
@@ -177,11 +192,11 @@ export default class ContactFromView extends JetView {
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {
-							// let form = this.$$("myform");
-							// if (form.isDirty()) {
-							// 	if (!form.validate()) { return false; }
-							// 	let changed = this.$$("myform").getDirtyValues();
-							// 	contacts.updateItem(this.getParam("id"), changed);
+								// let form = this.$$("myform");
+								// if (form.isDirty()) {
+								// 	if (!form.validate()) { return false; }
+								// 	let changed = this.$$("myform").getDirtyValues();
+								// 	contacts.updateItem(this.getParam("id"), changed);
 							}
 						},
 						{
@@ -190,15 +205,17 @@ export default class ContactFromView extends JetView {
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {
-								let formValue = this.$$("myform").getValues();
+								let formValue = this.$$("myform")
+									.getValues();
 								if (this.$$("myform").validate()) {
 									if (formValue.id) {
-										Contacts.updateItem(formValue.id, formValue);
+										Contacts.updateItem(formValue
+											.id, formValue);
 									}
 									else {
 										Contacts.add(formValue);
 									}
-								// this.closeForm();
+									// this.closeForm();
 								}
 							}
 						}
