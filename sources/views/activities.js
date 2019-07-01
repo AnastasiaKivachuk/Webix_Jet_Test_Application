@@ -160,6 +160,7 @@ export default class ActivityView extends JetView {
 		]).then(
 			() => {
 				this.$$("contactsData").sync(Activity);
+				Activity.data.filter();
 			}
 		);
 	}

@@ -142,7 +142,7 @@ export default class ContactFromView extends JetView {
 											let file = upload.file;
 											let reader = new FileReader();
 											reader.onload = (event) => {
-												// console.log(event.target.result);
+												console.log(event.target.result);
 												this.$$("preview").getBody().setValues({
 													src: event.target.result
 												});

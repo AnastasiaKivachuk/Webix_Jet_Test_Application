@@ -10,39 +10,17 @@ import ContactFromView from "./contactform";
 
 export default class ContactView extends JetView {
 	config() {
-		// this.$$("listInput").attachEvent("onTimedKeyPress", () => {
-		// 	let value = this.getValue().toLowerCase();
-		// 	this.$$("list").filter(obj => obj.title.toLowerCase().indexOf(value) !== -1);
-		// });
-
 		return {
 			cols: [{
 				rows: [{
 					view: "text",
-					locald: "listInput",
+					localId: "listInput",
 					placeholder: "Type something here",
 					on: {
 						onTimedKeyPress: () => {
-							// function equals(a, b) {
-							// 	a = a.toString().toLowerCase();
-							// 	return a.indexOf(b) !== -1;
-							// }
-							// let valueInput = this.getValue().toLowerCase();
-							// // let value = this.getValue().toLowerCase();
-							// this.$$("contactList").filter((obj) =>
-							// // 	obj.FirstName.toLowerCase().indexOf(value) !== -1 ||
-							// // obj.LastName.toLowerCase().indexOf(value) !== -1
-							// {
-							// 	// if (equals(obj.FirstName, text))
-							// 	// 	return true;
-							// 	// if (equals(obj.LastName, text))
-							// 	// 	return true;
-							// 	// if (equals(obj.Job, text)) { return true; }
-							// 	// if (equals(obj.FirstName, text)) { return true; }
-							// 	// if (equals(obj.LastName, text)) { return true; }
-							// 	// return false;
-							// 	(obj.Job, text).toLowerCase().indexOf(valueInput) !== -1;
-							// })
+							let valueInput = this.$$("listInput").getValue().toLowerCase();
+							this.$$("contactList").filter(obj => obj.value.toLowerCase().indexOf(valueInput) !== -1 ||
+									obj.Company.toLowerCase().indexOf(valueInput) !== -1);
 						}
 					}
 				},
@@ -61,6 +39,27 @@ export default class ContactView extends JetView {
 							this.setParam("id", id, true);
 						}
 					}
+					// data: ["ContactInfoView", "ContactFromView"],
+
+					// cells: [
+					// 	{
+					// 		localId: "ContactInfoView",
+					// 		columns: [
+					// 			{
+					// 				$subview: ContactInfoView
+					// 			}
+					// 		]
+					// 	},
+					// 	{
+					// 		localId: "ContactFromView",
+					// 		columns: [
+					// 			{
+					// 				$subview: ContactFromView
+					// 			}
+					// 		]
+					// 	}
+					// ]
+
 				},
 				{
 					view: "button",
@@ -74,8 +73,8 @@ export default class ContactView extends JetView {
 				}
 				]
 			},
-			ContactInfoView
-			// ContactFromView
+				ContactInfoView
+				// ContactFromView
 			]
 		};
 	}
@@ -85,6 +84,8 @@ export default class ContactView extends JetView {
 		Contacts.waitData.then(() => {
 			this.$$("contactList").sync(Contacts);
 		});
+		// this.$$("ContactFromView").show();
+		// this.$$("ContactFromView").hide();
 	}
 
 	urlChange() {
