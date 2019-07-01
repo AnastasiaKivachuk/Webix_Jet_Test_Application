@@ -15,14 +15,11 @@ export default class HeaderView extends JetView {
 			css: "app_layout",
 			cols: [
 				{
-					paddingX: 5,
-					paddingY: 10,
-					rows: [{css: "webix_shadow_medium", rows: [header]}]
+					rows: [{css: "webix_shadow_medium",
+						rows: [header]}]
 				},
 				{
 					type: "wide",
-					paddingY: 10,
-					paddingX: 5,
 					rows: [
 						{$subview: true}
 					]

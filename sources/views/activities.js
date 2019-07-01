@@ -76,10 +76,13 @@ export default class ActivityView extends JetView {
 				scrollX: false,
 				select: true,
 				columns: [{
-					id: "checkbox",
+					id: "State",
 					header: "",
+					checkValue: "Close",
+					uncheckValue: "Open",
 					template: "{common.checkbox()}",
-					width: 50
+					editor: "checkbox"
+
 				},
 				{
 					id: "TypeID",
@@ -140,7 +143,6 @@ export default class ActivityView extends JetView {
 						return false;
 					},
 					editBtn: (el, id) => {
-						console.log(Activity.getItem(id));
 						this.form.showForm(Activity.getItem(id), "Edit");
 					}
 				}
@@ -157,7 +159,7 @@ export default class ActivityView extends JetView {
 			ActivityType.waitData
 		]).then(
 			() => {
-				this.$$("contactsData").parse(Activity);
+				this.$$("contactsData").sync(Activity);
 			}
 		);
 	}

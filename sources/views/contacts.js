@@ -87,16 +87,14 @@ export default class ContactView extends JetView {
 		});
 	}
 
-
 	urlChange() {
 		Contacts.waitData.then(() => {
 			const list = this.$$("contactList");
 			let id = this.getParam("id");
-
 			if (!id || !Contacts.exists(id)) {
 				id = Contacts.getFirstId();
 			}
-			if (id) {
+			if (id && id !== list.getSelectedId()) {
 				list.select(id);
 			}
 		});
@@ -105,10 +103,10 @@ export default class ContactView extends JetView {
 
 	getUser(obj) {
 		return `<div class='contactItem'>
-					<image class="littleImg" src="${obj.Photo}" />
+					<image class="littleImg" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" /> 
 					<div class="contactInfo">
 						<span class="contactName">${obj.FirstName} ${obj.LastName}</span>
-						<span class="contactJob">${obj.Job}</span>
+						<span class="contactJob">${obj.Job || ""}</span>
 					</div>
 					</div>
 					`;

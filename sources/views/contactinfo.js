@@ -64,15 +64,11 @@ export default class ContactInfoView extends JetView {
 		]).then(() => {
 			const id = this.getParam("id");
 			if (id && Contacts.exists(id)) {
-				const values = Contacts.getItem(id);
+				const values = webix.copy(Contacts.getItem(id));
 				values.statusStr = Statuses.getItem(values.StatusID).Value;
-				this.$$("name").setValues(Contacts.getItem(id));
-				this.$$("infoContact").setValues(Contacts.getItem(id));
+				this.$$("name").setValues(values);
+				this.$$("infoContact").setValues(values);
 			}
-			// else {
-			// 	this.$$("name").clear();
-			// 	this.$$("infoContact").clear();
-			// }
 		});
 	}
 
@@ -80,18 +76,18 @@ export default class ContactInfoView extends JetView {
 		return `
 		<div class="tempale">
 		<div class="сolumn">
-		<img class=img src="${obj.Photo}"/>
-		<span class="status">${obj.statusStr}</span>
+		<img class=img src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}"/>
+		<span class="status">${obj.statusStr || ""}</span>
 		</div>
 		<div class="сolumn">
-		<div class="line"><span class="mdi mdi-email item"></span>${obj.Email}</span></div>
-		<div class="line"><span class="mdi mdi-skype item></span><span class="item">${obj.Skype}</span></div>
-		<div class="line"><span class="mdi mdi-tag item"></span><span class="item">${obj.Job}</span></div>
-		<div class="line"><span class="mdi mdi-briefcase item"></span><span class="item">${obj.Company}</span></div>
+		<div class="line"><span class="mdi mdi-email item"></span>${obj.Email || ""}</span></div>
+		<div class="line"><span class="mdi mdi-skype item></span><span class="item">${obj.Skype || ""}</span></div>
+		<div class="line"><span class="mdi mdi-tag item"></span><span class="item">${obj.Job || ""}</span></div>
+		<div class="line"><span class="mdi mdi-briefcase item"></span><span class="item">${obj.Company || ""}</span></div>
 		</div>
 		<div class="сolumn">
-		<div class="line"><span class="webix_icon mdi mdi-calendar item"></span><span class="item">${obj.Birthday}</span></div>
-		<div class="line"><span class="mdi mdi-map-marker item></span><span class="item">${obj.Address}</span></div>
+		<div class="line"><span class="webix_icon mdi mdi-calendar item"></span><span class="item">${obj.Birthday || ""}</span></div>
+		<div class="line"><span class="mdi mdi-map-marker item></span><span class="item">${obj.Address || ""}</span></div>
 		</div>
 		</div>`;
 	}

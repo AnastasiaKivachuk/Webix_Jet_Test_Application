@@ -43,26 +43,14 @@ export default class ActivityForm extends JetView {
 								label: "Type",
 								name: "TypeID",
 								invalidMessage: "Please select a type",
-								options: {
-									body: {
-										template: "#Value#",
-										data: ActivityType
-
-									}
-								}
+								options: ActivityType
 							},
 							{
 								view: "richselect",
 								label: "Contact",
 								name: "ContactID",
 								invalidMessage: "Please select a contact",
-								options: {
-									body: {
-										template: "#FirstName# #LastName#",
-										data: Contacts
-
-									}
-								}
+								options: Contacts
 							},
 							{
 								cols: [
@@ -87,7 +75,9 @@ export default class ActivityForm extends JetView {
 							{
 								view: "checkbox",
 								label: "Completed",
-								name: "checkbox"
+								name: "State",
+								checkValue: "Close",
+								uncheckValue: "Open"
 							},
 							{
 								cols: [{
@@ -103,7 +93,6 @@ export default class ActivityForm extends JetView {
 											else {
 												Activity.add(formValue);
 											}
-											this.$$("form").clearValidation();
 											this.closeForm();
 										}
 									}
@@ -137,6 +126,8 @@ export default class ActivityForm extends JetView {
 	}
 
 	closeForm() {
+		this.$$("form").clear();
+		this.$$("form").clearValidation();
 		this.getRoot().hide();
 	}
 }
