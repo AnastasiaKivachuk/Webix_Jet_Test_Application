@@ -122,8 +122,7 @@ export default class TabbarActivityFiles extends JetView {
 							label: "Add activity",
 							click: () => {
 								let id = this.getParam("id");
-								console.log(id);
-								this.form.showForm({ ContactID: id }, "Add", "true");
+								this.form.showForm({ContactID: id}, "Add", "true");
 							}
 
 						}]
@@ -182,11 +181,9 @@ export default class TabbarActivityFiles extends JetView {
 							{
 								view: "uploader",
 								label: "Upload file",
-								// localId: "records",
 								name: "records",
 								type: "icon",
 								icon: "wxi-download",
-								// link: "mydatatable",
 								on: {
 									onBeforeFileAdd(unload) {
 										const id = this.$scope.getParam("id", true);
@@ -215,9 +212,9 @@ export default class TabbarActivityFiles extends JetView {
 
 	urlChange() {
 		Records.waitData.then(() => {
-			let id = this.getParam("id");
+			let id = this.getParam("id", true);
 			this.$$("mydatatable").sync(Records);
-			if (id && Contacts.exists(id)) {			
+			if (id && Contacts.exists(id)) {
 				Records.data.filter(data => data.contactID.toString() === id.toString());
 			}
 		});
@@ -227,7 +224,7 @@ export default class TabbarActivityFiles extends JetView {
 			Contacts.waitData,
 			ActivityType.waitData
 		]).then(() => {
-			let id = this.getParam("id");
+			let id = this.getParam("id", true);
 			if (id && Contacts.exists(id)) {
 				webix.$$("activities").sync(Activity);
 				Activity.data.filter(obj => obj.ContactID.toString() === id.toString());

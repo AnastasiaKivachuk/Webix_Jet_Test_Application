@@ -8,6 +8,8 @@ import {
 	Statuses
 } from "../models/statuses";
 import TabbarActivityFiles from "./tabbaractivityfiles";
+import {Records} from "../models/records";
+import {Activity} from "../models/Activity";
 
 export default class ContactInfoView extends JetView {
 	config() {
@@ -30,7 +32,28 @@ export default class ContactInfoView extends JetView {
 							icon: "wxi-trash",
 							label: "Delete",
 							autowidth: true,
-							click: () => {}
+							click: () => {
+								let id = this.getParam("id", true);
+								webix.confirm({
+									text: "Do you still want to continue?",
+									callback: (result) => {
+										if (result) {
+											Contacts.remove(id);
+											let firstId = Contacts.getFirstId();
+											this.getRoot().getParentView().queryView("list").select(firstId);
+											const filesActivity = Activity.find(obj => obj.ContactID.toString() === id.toString);
+											filesActivity.forEach((act) => {
+												Activity.remove(act.id);
+											});
+											const filesRecords = Records.find(obj => obj.ContactID.toString() === id.toString);
+											filesRecords.forEach((act) => {
+												Records.remove(act.id);
+											});
+										}
+									}
+								});
+								return false;
+							}
 						},
 						{
 							view: "button",
@@ -39,7 +62,9 @@ export default class ContactInfoView extends JetView {
 							icon: "wxi-pencil",
 							label: "Edit",
 							autowidth: true,
-							click: () => {}
+							click: () => {
+								this.app.callEvent("showContactForm", ["Edit"]);
+							}
 						}
 					]
 				},
@@ -62,7 +87,7 @@ export default class ContactInfoView extends JetView {
 			Contacts.waitData,
 			Statuses.waitData
 		]).then(() => {
-			const id = this.getParam("id");
+			const id = this.getParam("id", true);
 			if (id && Contacts.exists(id)) {
 				const values = webix.copy(Contacts.getItem(id));
 				values.statusStr = Statuses.getItem(values.StatusID).Value;

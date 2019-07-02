@@ -4,9 +4,6 @@ import {
 import {
 	Contacts
 } from "../models/contacts";
-import ContactInfoView from "./contactinfo";
-import ContactFromView from "./contactform";
-
 
 export default class ContactView extends JetView {
 	config() {
@@ -20,7 +17,7 @@ export default class ContactView extends JetView {
 						onTimedKeyPress: () => {
 							let valueInput = this.$$("listInput").getValue().toLowerCase();
 							this.$$("contactList").filter(obj => obj.value.toLowerCase().indexOf(valueInput) !== -1 ||
-									obj.Job.toLowerCase().indexOf(valueInput) !== -1);
+								obj.Job.toLowerCase().indexOf(valueInput) !== -1);
 						}
 					}
 				},
@@ -39,26 +36,6 @@ export default class ContactView extends JetView {
 							this.setParam("id", id, true);
 						}
 					}
-					// data: ["ContactInfoView", "ContactFromView"],
-
-					// cells: [
-					// 	{
-					// 		localId: "ContactInfoView",
-					// 		columns: [
-					// 			{
-					// 				$subview: ContactInfoView
-					// 			}
-					// 		]
-					// 	},
-					// 	{
-					// 		localId: "ContactFromView",
-					// 		columns: [
-					// 			{
-					// 				$subview: ContactFromView
-					// 			}
-					// 		]
-					// 	}
-					// ]
 
 				},
 				{
@@ -68,13 +45,13 @@ export default class ContactView extends JetView {
 					icon: "wxi-plus",
 					label: "Add contact",
 					click: () => {
-
+						this.setParam("mode", "Add");
+						this.show("contactform").then();
 					}
 				}
 				]
 			},
-			// ContactInfoView
-			ContactFromView
+			{$subview: true}
 			]
 		};
 	}
@@ -83,9 +60,19 @@ export default class ContactView extends JetView {
 	init() {
 		Contacts.waitData.then(() => {
 			this.$$("contactList").sync(Contacts);
+			this.show("/top/contacts/contactinfo").then();
 		});
-		// this.$$("ContactFromView").show();
-		// this.$$("ContactFromView").hide();
+
+		this.on(this.app, "showContactInfoView", (id) => {
+			this.show("contactinfo").then(() => {
+				this.setParam("id", id, true);
+			});
+		});
+		this.on(this.app, "showContactForm", (mode) => {
+			this.show("contactform").then(() => {
+				this.setParam("mode", mode, true);
+			});
+		});
 	}
 
 	urlChange() {
@@ -112,4 +99,8 @@ export default class ContactView extends JetView {
 					</div>
 					`;
 	}
+
+	// showContactForm(data) {
+	// 	this.show("contactform", {target: "right"});
+	// }
 }

@@ -8,16 +8,15 @@ import {
 	Statuses
 } from "../models/statuses";
 
-export default class ContactFromView extends JetView {
+export default class ContactFormView extends JetView {
 	config() {
 		return {
 			rows: [{
 				template: "Add contact",
 				align: "left",
 				css: "nameStyle",
-				autoheigth: true,
 				localId: "name",
-				height: 40
+				autoheight: true
 			},
 			{
 				view: "form",
@@ -124,7 +123,6 @@ export default class ContactFromView extends JetView {
 							cols: [{
 								view: "template",
 								localId: "preview",
-								// template: obj => `<image class="imgForm" src="${obj.Photo}" />`,
 								template: "<img src='#src#' class='imgForm'></img>",
 								height: 100,
 								width: 100,
@@ -158,7 +156,6 @@ export default class ContactFromView extends JetView {
 											return false;
 										}
 									}
-									// upload: "http://localhost:8096/api/v1/contacts/"
 								},
 								{
 									view: "button",
@@ -191,17 +188,14 @@ export default class ContactFromView extends JetView {
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {
-							// let form = this.$$("myform");
-							// if (form.isDirty()) {
-							// 	if (!form.validate()) { return false; }
-							// 	let changed = this.$$("myform").getDirtyValues();
-							// 	contacts.updateItem(this.getParam("id"), changed);
+								let id = this.getParam("id", true);
+								this.app.callEvent("showContactInfoView", [id]);
 							}
 						},
 						{
 							view: "button",
-							value: "Save",
-							autowidth: true,
+							localId: "SaveAddBTN",
+							width: 70,
 							css: "webix-primary",
 							click: () => {
 								let formValue = this.$$("myform")
@@ -213,8 +207,9 @@ export default class ContactFromView extends JetView {
 									}
 									else {
 										Contacts.add(formValue);
+										this.app.callEvent("showInfo");
+										this.show("contactinfo", {target: "right"});
 									}
-								// this.closeForm();
 								}
 							}
 						}
@@ -225,7 +220,7 @@ export default class ContactFromView extends JetView {
 				rules: {
 					FirstName: webix.rules.isNotEmpty,
 					LastName: webix.rules.isNotEmpty,
-					newStartDate: value => value <= new Date(),
+					newStartDate: value => value <= new Date() && value !== null,
 					StatusID: webix.rules.isNotEmpty,
 					Job: webix.rules.isNotEmpty,
 					Company: webix.rules.isNotEmpty,
@@ -233,7 +228,7 @@ export default class ContactFromView extends JetView {
 					Email: webix.rules.isEmail,
 					Skype: webix.rules.isNotEmpty,
 					Phone: webix.rules.isNotEmpty,
-					newBirthday: value => value < new Date()
+					newBirthday: value => value < new Date() && value !== null
 				}
 			},
 			{}
@@ -246,16 +241,31 @@ export default class ContactFromView extends JetView {
 			Contacts.waitData,
 			Statuses.waitData
 		]).then(() => {
-			const id = this.getParam("id");
-			let contactItem = Contacts.getItem(id);
-			if (id && Contacts.exists(id)) {
-				this.$$("myform").setValues(Contacts.getItem(id));
-				this.$$("preview").setValues({src: contactItem.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
+			const mode = this.getParam("mode", true);
+			if (mode) {
+				this.$$("name").setHTML(`<H2 class="nameStyle">${mode} contact</H2>`);
+				
+				if (mode === "Add") {
+					this.$$("myform").setValues({});
+					this.$$("SaveAddBTN").setValue("Add");
+					this.$$("preview").setValues({src: "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
+				}
+				if (mode === "Edit") {
+					const id = this.getParam("id", true);
+					let contactItem = Contacts.getItem(id);
+					this.$$("SaveAddBTN").setValue("Save");
+					if (id && Contacts.exists(id)) {
+						this.$$("myform").setValues(Contacts.getItem(id));
+						this.$$("preview").setValues({src: contactItem.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
+					}
+					else {
+						this.$$("myform").clear();
+						this.$$("myform").clearValidation();
+					}
+				}
 			}
-			else {
-				this.$$("myform").clear();
-				this.$$("myform").clearValidation();
-			}
+
+
 		});
 	}
 }
