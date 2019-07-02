@@ -164,7 +164,7 @@ export default class ContactFormView extends JetView {
 									autowidth: true,
 									click: () => {
 										this.$$("preview").setValues({
-											src: ""
+											src: "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"
 										});
 										this.$$("preview").show();
 									}
@@ -207,8 +207,8 @@ export default class ContactFormView extends JetView {
 									}
 									else {
 										Contacts.add(formValue);
-										this.app.callEvent("showInfo");
-										this.show("contactinfo", {target: "right"});
+										let id = this.getParam("id", true);
+										this.app.callEvent("showContactInfoView", [id]);
 									}
 								}
 							}
@@ -220,11 +220,11 @@ export default class ContactFormView extends JetView {
 				rules: {
 					FirstName: webix.rules.isNotEmpty,
 					LastName: webix.rules.isNotEmpty,
-					newStartDate: value => value <= new Date() && value !== null,
+					newStartDate: value => value <= new Date(),
 					StatusID: webix.rules.isNotEmpty,
 					Job: webix.rules.isNotEmpty,
-					Email: webix.rules.isEmail,
-					newBirthday: value => value < new Date() && value !== null
+					// Email: webix.rules.isEmail,
+					newBirthday: value => value < new Date()
 				}
 			},
 			{}

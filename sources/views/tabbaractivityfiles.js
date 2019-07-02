@@ -112,7 +112,7 @@ export default class TabbarActivityFiles extends JetView {
 							icon: "wxi-plus",
 							label: "Add activity",
 							click: () => {
-								let id = this.getParam("id");
+								let id = this.getParam("id", true);
 								this.form.showForm({ContactID: id}, "Add", "true");
 							}
 
