@@ -20,7 +20,7 @@ export default class ContactView extends JetView {
 						onTimedKeyPress: () => {
 							let valueInput = this.$$("listInput").getValue().toLowerCase();
 							this.$$("contactList").filter(obj => obj.value.toLowerCase().indexOf(valueInput) !== -1 ||
-									obj.Company.toLowerCase().indexOf(valueInput) !== -1);
+									obj.Job.toLowerCase().indexOf(valueInput) !== -1);
 						}
 					}
 				},
@@ -73,8 +73,8 @@ export default class ContactView extends JetView {
 				}
 				]
 			},
-				ContactInfoView
-				// ContactFromView
+			// ContactInfoView
+			ContactFromView
 			]
 		};
 	}

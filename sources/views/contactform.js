@@ -124,7 +124,8 @@ export default class ContactFromView extends JetView {
 							cols: [{
 								view: "template",
 								localId: "preview",
-								template: obj => `<image class="imgForm" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" />`,
+								// template: obj => `<image class="imgForm" src="${obj.Photo}" />`,
+								template: "<img src='#src#' class='imgForm'></img>",
 								height: 100,
 								width: 100,
 								borderless: true
@@ -134,18 +135,20 @@ export default class ContactFromView extends JetView {
 									view: "uploader",
 									accept: "image/jpeg, image/png",
 									value: "Upload file",
-									id: "Photo",
+									localId: "Photo",
 									name: "records",
 									autowidth: true,
+									autosend: false,
+									multiple: false,
 									on: {
 										onBeforeFileAdd: (upload) => {
 											let file = upload.file;
 											let reader = new FileReader();
 											reader.onload = (event) => {
-												console.log(event.target.result);
-												this.$$("preview").getBody().setValues({
+												this.$$("preview").setValues({
 													src: event.target.result
 												});
+												this.$$("myform").setValues({Photo: event.target.result}, true);
 												this.$$("preview").show();
 											};
 											reader
@@ -154,30 +157,26 @@ export default class ContactFromView extends JetView {
 												);
 											return false;
 										}
-									},
-									// link: "mylist",
-									upload: "http://localhost:8096/api/v1/contacts/"
+									}
+									// upload: "http://localhost:8096/api/v1/contacts/"
 								},
 								{
 									view: "button",
 									css: "webix_primary btnStyle",
 									label: "Delete",
 									autowidth: true,
-									click: () => {}
+									click: () => {
+										this.$$("preview").setValues({
+											src: ""
+										});
+										this.$$("preview").show();
+									}
 								}
 								]
 							}
 
 							]
 						}
-							// {
-							// 	view: "uploader",
-							// 	value: "Upload file",
-							// 	id: "Photo",
-							// 	name: "records",
-							// 	// link: "mylist",
-							// 	upload: "http://localhost:8096/api/v1/contacts/"
-							// }
 
 						]
 					}
@@ -192,11 +191,11 @@ export default class ContactFromView extends JetView {
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {
-								// let form = this.$$("myform");
-								// if (form.isDirty()) {
-								// 	if (!form.validate()) { return false; }
-								// 	let changed = this.$$("myform").getDirtyValues();
-								// 	contacts.updateItem(this.getParam("id"), changed);
+							// let form = this.$$("myform");
+							// if (form.isDirty()) {
+							// 	if (!form.validate()) { return false; }
+							// 	let changed = this.$$("myform").getDirtyValues();
+							// 	contacts.updateItem(this.getParam("id"), changed);
 							}
 						},
 						{
@@ -215,7 +214,7 @@ export default class ContactFromView extends JetView {
 									else {
 										Contacts.add(formValue);
 									}
-									// this.closeForm();
+								// this.closeForm();
 								}
 							}
 						}
@@ -226,7 +225,7 @@ export default class ContactFromView extends JetView {
 				rules: {
 					FirstName: webix.rules.isNotEmpty,
 					LastName: webix.rules.isNotEmpty,
-					newStartDate: webix.rules.isNotEmpty,
+					newStartDate: value => value <= new Date(),
 					StatusID: webix.rules.isNotEmpty,
 					Job: webix.rules.isNotEmpty,
 					Company: webix.rules.isNotEmpty,
@@ -234,10 +233,8 @@ export default class ContactFromView extends JetView {
 					Email: webix.rules.isEmail,
 					Skype: webix.rules.isNotEmpty,
 					Phone: webix.rules.isNotEmpty,
-					newBirthday: webix.rules.isNotEmpty
+					newBirthday: value => value < new Date()
 				}
-
-
 			},
 			{}
 			]
@@ -250,8 +247,10 @@ export default class ContactFromView extends JetView {
 			Statuses.waitData
 		]).then(() => {
 			const id = this.getParam("id");
+			let contactItem = Contacts.getItem(id);
 			if (id && Contacts.exists(id)) {
 				this.$$("myform").setValues(Contacts.getItem(id));
+				this.$$("preview").setValues({src: contactItem.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
 			}
 			else {
 				this.$$("myform").clear();

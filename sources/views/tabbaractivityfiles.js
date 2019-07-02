@@ -33,19 +33,21 @@ export default class TabbarActivityFiles extends JetView {
 				view: "tabbar",
 				localId: "tabbar",
 				multiview: true,
-				options: [{
-					value: "Activities",
-					id: "activities"
-				},
-				{
-					value: "Files",
-					id: "files"
-				}
+				options: [
+					{
+						value: "Activities",
+						id: "activitiesView"
+					},
+					{
+						value: "Files",
+						id: "files"
+					}
 				]
 			},
 			{
 				cells: [
 					{
+						id: "activitiesView",
 						rows: [{
 							id: "activities",
 							view: "datatable",
@@ -108,7 +110,7 @@ export default class TabbarActivityFiles extends JetView {
 								},
 								editBtn: (el, id) => {
 									this.form.showForm(Activity.getItem(id),
-										"Edit");
+										"Edit", "true");
 								}
 							}
 						},
@@ -119,7 +121,9 @@ export default class TabbarActivityFiles extends JetView {
 							icon: "wxi-plus",
 							label: "Add activity",
 							click: () => {
-								this.form.showForm({}, "Add");
+								let id = this.getParam("id");
+								console.log(id);
+								this.form.showForm({ ContactID: id }, "Add", "true");
 							}
 
 						}]
@@ -128,13 +132,6 @@ export default class TabbarActivityFiles extends JetView {
 						view: "form",
 						id: "files",
 						rows: [
-							// 	{
-							// 	view: "list",
-							// 	id: "mylist",
-							// 	type: "uploader",
-							// 	autoheight: true,
-							// 	borderless: true
-							// },
 							{
 								localId: "mydatatable",
 								view: "datatable",
@@ -143,21 +140,21 @@ export default class TabbarActivityFiles extends JetView {
 								select: true,
 								columns: [
 									{
-										name: "name",
+										id: "name",
 										header: "Name",
 										width: 300,
 										sort: "string",
 										fillspace: true
 									},
 									{
-										name: "lastModifiedDate",
+										id: "lastModifiedDate",
 										format: webix.i18n.longDateFormatStr,
 										header: "Change date",
 										width: 300,
 										sort: "date"
 									},
 									{
-										name: "sizetext",
+										id: "sizetext",
 										header: "Size",
 										width: 300,
 										sort: "string"
@@ -173,7 +170,7 @@ export default class TabbarActivityFiles extends JetView {
 											text: "Do you still want to continue?",
 											callback: (result) => {
 												if (result) {
-													Activity.remove(id);
+													Records.remove(id);
 												}
 											}
 										});
@@ -192,15 +189,13 @@ export default class TabbarActivityFiles extends JetView {
 								// link: "mydatatable",
 								on: {
 									onBeforeFileAdd(unload) {
-										// const id = this.getParam("id");
-										// console.log(id);
+										const id = this.$scope.getParam("id", true);
 										Records.add({
 											name: unload.name,
 											sizetext: unload.sizetext,
-											lastModifiedDate: unload.file.lastModifiedDate
-											// contactID: idContact
+											lastModifiedDate: unload.file.lastModifiedDate,
+											contactID: id
 										});
-										console.log(unload);
 										return false;
 									}
 								}
@@ -220,11 +215,11 @@ export default class TabbarActivityFiles extends JetView {
 
 	urlChange() {
 		Records.waitData.then(() => {
-			// let id = this.getParam("id");
-			// if (id && Contacts.exists(id)) {
+			let id = this.getParam("id");
 			this.$$("mydatatable").sync(Records);
-			// 	Records.data.filter(data => data.contactID.toString() === id.toString());
-			// }
+			if (id && Contacts.exists(id)) {			
+				Records.data.filter(data => data.contactID.toString() === id.toString());
+			}
 		});
 
 		webix.promise.all([
