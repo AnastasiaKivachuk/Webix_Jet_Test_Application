@@ -190,6 +190,7 @@ export default class ContactFormView extends JetView {
 							click: () => {
 								let id = this.getParam("id", true);
 								this.app.callEvent("showContactInfoView", [id]);
+								this.getRoot().getParentView().queryView("list").enable();
 							}
 						},
 						{
@@ -207,8 +208,9 @@ export default class ContactFormView extends JetView {
 									}
 									else {
 										Contacts.add(formValue);
-										let id = this.getParam("id", true);
-										this.app.callEvent("showContactInfoView", [id]);
+										let lastId = this.getRoot().getParentView().queryView("list").getLastId();
+										this.app.callEvent("showContactInfoView", [lastId]);
+										this.getRoot().getParentView().queryView("list").enable();
 									}
 								}
 							}
@@ -245,6 +247,7 @@ export default class ContactFormView extends JetView {
 					this.$$("myform").setValues({});
 					this.$$("SaveAddBTN").setValue("Add");
 					this.$$("preview").setValues({src: "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
+					this.getRoot().getParentView().queryView("list").disable();
 				}
 				if (mode === "Edit") {
 					const id = this.getParam("id", true);
