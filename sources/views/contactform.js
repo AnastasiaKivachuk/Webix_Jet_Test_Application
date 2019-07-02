@@ -223,11 +223,7 @@ export default class ContactFormView extends JetView {
 					newStartDate: value => value <= new Date() && value !== null,
 					StatusID: webix.rules.isNotEmpty,
 					Job: webix.rules.isNotEmpty,
-					Company: webix.rules.isNotEmpty,
-					Website: webix.rules.isNotEmpty,
 					Email: webix.rules.isEmail,
-					Skype: webix.rules.isNotEmpty,
-					Phone: webix.rules.isNotEmpty,
 					newBirthday: value => value < new Date() && value !== null
 				}
 			},
@@ -244,7 +240,7 @@ export default class ContactFormView extends JetView {
 			const mode = this.getParam("mode", true);
 			if (mode) {
 				this.$$("name").setHTML(`<H2 class="nameStyle">${mode} contact</H2>`);
-				
+
 				if (mode === "Add") {
 					this.$$("myform").setValues({});
 					this.$$("SaveAddBTN").setValue("Add");
@@ -264,8 +260,6 @@ export default class ContactFormView extends JetView {
 					}
 				}
 			}
-
-
 		});
 	}
 }

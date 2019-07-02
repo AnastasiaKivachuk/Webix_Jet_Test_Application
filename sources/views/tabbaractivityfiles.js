@@ -18,15 +18,6 @@ import {
 
 export default class TabbarActivityFiles extends JetView {
 	config() {
-		// webix.$$("records").send(() => {
-		// 	// getting file properties
-		// 	webix.$$("records").files.data.each((obj) => {
-		// 		let size = obj.size;
-		// 		let name = obj.name;
-		// 		let idFile = obj.id;
-		// 		webix.message(`name: ${name}, size ${size}, idFile ${idFile} `);
-		// 	});
-		// });
 		return {
 			rows: [{
 				borderless: true,

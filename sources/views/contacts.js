@@ -64,7 +64,7 @@ export default class ContactView extends JetView {
 		});
 
 		this.on(this.app, "showContactInfoView", (id) => {
-			this.show("contactinfo").then(() => {
+			this.show("/top/contacts/contactinfo").then(() => {
 				this.setParam("id", id, true);
 			});
 		});
@@ -91,7 +91,7 @@ export default class ContactView extends JetView {
 
 	getUser(obj) {
 		return `<div class='contactItem'>
-					<image class="littleImg" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" /> 
+					<image class="littleImg" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" />
 					<div class="contactInfo">
 						<span class="contactName">${obj.FirstName} ${obj.LastName}</span>
 						<span class="contactJob">${obj.Job || ""}</span>
@@ -99,8 +99,5 @@ export default class ContactView extends JetView {
 					</div>
 					`;
 	}
-
-	// showContactForm(data) {
-	// 	this.show("contactform", {target: "right"});
-	// }
 }
+

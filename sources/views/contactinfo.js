@@ -41,11 +41,15 @@ export default class ContactInfoView extends JetView {
 											Contacts.remove(id);
 											let firstId = Contacts.getFirstId();
 											this.getRoot().getParentView().queryView("list").select(firstId);
-											const filesActivity = Activity.find(obj => obj.ContactID.toString() === id.toString);
+											const filesActivity = Activity.find(
+												obj => obj.ContactID.toString() === id.toString
+											);
 											filesActivity.forEach((act) => {
 												Activity.remove(act.id);
 											});
-											const filesRecords = Records.find(obj => obj.ContactID.toString() === id.toString);
+											const filesRecords = Records.find(
+												obj => obj.ContactID.toString() === id.toString
+											);
 											filesRecords.forEach((act) => {
 												Records.remove(act.id);
 											});

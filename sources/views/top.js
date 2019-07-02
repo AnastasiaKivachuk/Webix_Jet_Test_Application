@@ -31,29 +31,6 @@ export default class TopView extends JetView {
 			}
 		};
 
-		// let ui = {
-		// 	type: "clean",
-		// 	paddingX: 5,
-		// 	css: "app_layout",
-		// 	cols: [
-		// 		{
-		// 			paddingX: 5,
-		// 			paddingY: 10,
-		// 			rows: [{css: "webix_shadow_medium", rows: [menu]}]
-		// 		},
-		// 		{
-		// 			type: "wide",
-		// 			paddingY: 10,
-		// 			paddingX: 5,
-		// 			rows: [
-		// 				{$subview: true}
-		// 			]
-		// 		}
-		// 	]
-		// };
-
-		// return ui;
-
 		return {
 			rows: [
 				header,
