@@ -18,6 +18,7 @@ import {
 
 export default class TabbarActivityFiles extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [{
 				borderless: true,
@@ -26,11 +27,11 @@ export default class TabbarActivityFiles extends JetView {
 				multiview: true,
 				options: [
 					{
-						value: "Activities",
+						value: _("Activities"),
 						id: "activitiesView"
 					},
 					{
-						value: "Files",
+						value: _("Files"),
 						id: "files"
 					}
 				]
@@ -90,7 +91,7 @@ export default class TabbarActivityFiles extends JetView {
 							onClick: {
 								removeBtn: (el, id) => {
 									webix.confirm({
-										text: "Do you still want to continue?",
+										text: _("Do you still want to continue?"),
 										callback: (result) => {
 											if (result) {
 												Activity.remove(id);
@@ -101,7 +102,7 @@ export default class TabbarActivityFiles extends JetView {
 								},
 								editBtn: (el, id) => {
 									this.form.showForm(Activity.getItem(id),
-										"Edit", "true");
+										_("Edit"), "true");
 								}
 							}
 						},
@@ -110,10 +111,10 @@ export default class TabbarActivityFiles extends JetView {
 							type: "icon",
 							css: "webix_primary",
 							icon: "wxi-plus",
-							label: "Add activity",
+							label: _("Add activity"),
 							click: () => {
 								let id = this.getParam("id", true);
-								this.form.showForm({ContactID: id}, "Add", "true");
+								this.form.showForm({ContactID: id}, _("Add"), "true");
 							}
 
 						}]
@@ -131,7 +132,7 @@ export default class TabbarActivityFiles extends JetView {
 								columns: [
 									{
 										id: "name",
-										header: "Name",
+										header: _("Name"),
 										width: 300,
 										sort: "string",
 										fillspace: true
@@ -139,13 +140,13 @@ export default class TabbarActivityFiles extends JetView {
 									{
 										id: "lastModifiedDate",
 										format: webix.i18n.longDateFormatStr,
-										header: "Change date",
+										header: _("Change date"),
 										width: 300,
 										sort: "date"
 									},
 									{
 										id: "sizetext",
-										header: "Size",
+										header: _("Size"),
 										width: 300,
 										sort: "string"
 									},
@@ -157,7 +158,7 @@ export default class TabbarActivityFiles extends JetView {
 								onClick: {
 									removeBtn: (el, id) => {
 										webix.confirm({
-											text: "Do you still want to continue?",
+											text: _("Do you still want to continue?"),
 											callback: (result) => {
 												if (result) {
 													Records.remove(id);
@@ -171,7 +172,7 @@ export default class TabbarActivityFiles extends JetView {
 							},
 							{
 								view: "uploader",
-								label: "Upload file",
+								label: _("Upload file"),
 								name: "records",
 								type: "icon",
 								icon: "wxi-download",

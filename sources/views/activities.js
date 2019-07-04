@@ -14,8 +14,8 @@ import ActivityForm from "./activityform";
 
 export default class ActivityView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
-
 			rows: [{
 				cols: [
 					{
@@ -25,31 +25,31 @@ export default class ActivityView extends JetView {
 						options: [
 							{
 								id: 1,
-								value: "All"
+								value: _("All")
 							},
 							{
 								id: 2,
-								value: "Overdue"
+								value: _("Overdue")
 							},
 							{
 								id: 3,
-								value: "Completed"
+								value: _("Completed")
 							},
 							{
 								id: 4,
-								value: "Today"
+								value: _("Today")
 							},
 							{
 								id: 5,
-								value: "Tomorrow"
+								value: _("Tomorrow")
 							},
 							{
 								id: 6,
-								value: "This week"
+								value: _("This week")
 							},
 							{
 								id: 7,
-								value: "This month"
+								value: _("This month")
 							}
 						],
 						on: {
@@ -64,10 +64,10 @@ export default class ActivityView extends JetView {
 						type: "icon",
 						css: "webix_primary",
 						icon: "wxi-plus",
-						label: "Add activity",
+						label: _("Add activity"),
 						autowidth: true,
 						click: () => {
-							this.form.showForm({}, "Add");
+							this.form.showForm({}, _("Add"));
 						}
 
 					}
@@ -102,7 +102,7 @@ export default class ActivityView extends JetView {
 				{
 					id: "DueNewDate",
 					format: webix.i18n.longDateFormatStr,
-					header: ["Due date", {
+					header: [_("Due date"), {
 						content: "dateRangeFilter"
 					}],
 					width: 300,
@@ -110,7 +110,7 @@ export default class ActivityView extends JetView {
 				},
 				{
 					id: "Details",
-					header: ["Details", {
+					header: [_("Details"), {
 						content: "textFilter"
 					}],
 					fillspace: true,
@@ -119,7 +119,7 @@ export default class ActivityView extends JetView {
 				{
 					id: "ContactID",
 					editor: "select",
-					header: ["Contact", {
+					header: [_("Contact"), {
 						content: "selectFilter"
 					}],
 					options: Contacts,
@@ -138,7 +138,7 @@ export default class ActivityView extends JetView {
 				onClick: {
 					removeBtn: (el, id) => {
 						webix.confirm({
-							text: "Do you still want to continue?",
+							text: _("Do you still want to continue?"),
 							callback: (result) => {
 								if (result) {
 									Activity.remove(id);
@@ -148,7 +148,7 @@ export default class ActivityView extends JetView {
 						return false;
 					},
 					editBtn: (el, id) => {
-						this.form.showForm(Activity.getItem(id), "Edit");
+						this.form.showForm(Activity.getItem(id), _("Edit"));
 					}
 				}
 			}
@@ -173,32 +173,30 @@ export default class ActivityView extends JetView {
 			webix.$$("tabbar"),
 			{
 				columnId: "State",
-				compare: (value, filter) => {
+				compare: (value, filter, item) => {
 					let filterData = parseInt(filter);
-					if (filterData === 1) return value;
-					else if (filterData === 2) return value === "Open";
-					else if (filterData === 3) return value === "Close";
-					else if (filterData === 4) console.log(4);
-					else if (filterData === 5) console.log(5);
-					else if (filterData === 6) console.log(6);
-					return value === "Close";
+					// console.log(item);
+					let state = item.State;
+					let date = item.DueNewDate;
+					let yearDate = date.getFullYear();
+					let currentYear = new Date().getFullYear();
+					let monthDate = date.getMonth();
+					let currentMonth = new Date().getMonth();
+					let dayDate = date.getDate();
+					let currentDay = new Date().getDate();
+					let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+					let currentDayOfWeek = new Date().getDay();
+					let firstDayOfWeek = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * currentDayOfWeek);
+					let lastDayOfWeek = new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * (6 - currentDayOfWeek));
+					if (filterData === 1) return item;
+					else if (filterData === 2) return state === "Open" && date < new Date();
+					else if (filterData === 3) return state === "Close";
+					else if (filterData === 4) return yearDate === currentYear && monthDate === currentMonth && dayDate === currentDay;
+					else if (filterData === 5) return yearDate === tomorrow.getFullYear() && monthDate === tomorrow.getMonth() && dayDate === tomorrow.getDate();
+					else if (filterData === 6) return date >= firstDayOfWeek && date <= lastDayOfWeek;
+					return yearDate === currentYear && monthDate === currentMonth;
 				}
-
-
-				// columnId: "DueNewDate",
-				// compare: (value, filter) => {
-				// 	let year = value.getFullYear().toString();
-				// 	let filterData = parseInt(filter);
-				// 	console.log(value);
-				// 	console.log(filterData);
-				// 	if (filterData === 1) return year;
-				// 	// else if (filterData === 2) return value === "Open";
-				// 	// else if (filterData === 3) return value === "Close";
-				// 	else if (filterData === 4) return year === new Date().getFullYear().toString();
-				// 	else if (filterData === 5) console.log(5);
-				// 	else if (filterData === 6) console.log(7);
-				// 	return value === "Close";
-				// }
 			},
 			{
 				getValue: node => node.getValue(),

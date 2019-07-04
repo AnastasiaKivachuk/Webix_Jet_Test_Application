@@ -13,6 +13,7 @@ import {Activity} from "../models/Activity";
 
 export default class ContactInfoView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [
 				{
@@ -30,7 +31,7 @@ export default class ContactInfoView extends JetView {
 							type: "icon",
 							css: "webix_primary btnStyle",
 							icon: "wxi-trash",
-							label: "Delete",
+							label: _("Delete"),
 							autowidth: true,
 							click: () => {
 								let id = this.getParam("id", true);
@@ -64,7 +65,7 @@ export default class ContactInfoView extends JetView {
 							css: "webix_primary btnStyle",
 							type: "icon",
 							icon: "wxi-pencil",
-							label: "Edit",
+							label: _("Edit"),
 							autowidth: true,
 							click: () => {
 								this.app.callEvent("showContactForm", ["Edit"]);

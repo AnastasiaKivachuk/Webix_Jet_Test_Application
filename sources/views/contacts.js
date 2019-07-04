@@ -7,12 +7,13 @@ import {
 
 export default class ContactView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			cols: [{
 				rows: [{
 					view: "text",
 					localId: "listInput",
-					placeholder: "Type something here",
+					placeholder: _("Type something here"),
 					on: {
 						onTimedKeyPress: () => {
 							let valueInput = this.$$("listInput").getValue().toLowerCase();
@@ -43,7 +44,7 @@ export default class ContactView extends JetView {
 					type: "icon",
 					css: "webix_primary",
 					icon: "wxi-plus",
-					label: "Add contact",
+					label: _("Add contact"),
 					click: () => {
 						this.setParam("mode", "Add");
 						this.show("contactform").then();
