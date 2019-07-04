@@ -1,6 +1,13 @@
 import {
 	JetView
 } from "webix-jet";
+import CommonTable from "./commonTable";
+import {
+	ActivityType
+} from "../models/ActivityType";
+import {
+	Statuses
+} from "../models/statuses";
 
 export default class SettingsView extends JetView {
 	config() {
@@ -15,12 +22,26 @@ export default class SettingsView extends JetView {
 					view: "segmented",
 					label: _("Language"),
 					options: [
-						{id: "en", value: "English"},
-						{id: "ru", value: "Russian"}
+						{ id: "en", value: "English" },
+						{ id: "ru", value: "Russian" }
 					],
 					click: () => this.toggleLanguage(),
-					value: lang},
-				{}
+					value: lang
+				},
+				{
+					view: "template",
+					template: "Activity type",
+					type: "header",
+					css: "webix_header app_header"
+				},
+				new CommonTable(this.app, "", ActivityType),
+				{
+					view: "template",
+					template: "Statuses",
+					type: "header",
+					css: "webix_header app_header"
+				},
+				new CommonTable(this.app, "", Statuses)
 			]
 
 		};
@@ -28,7 +49,7 @@ export default class SettingsView extends JetView {
 
 	toggleLanguage() {
 		const langs = this.app.getService("locale");
-		const value = this.getRoot().queryView({name: "lang"}).getValue();
+		const value = this.getRoot().queryView({ name: "lang" }).getValue();
 		langs.setLang(value);
 		console.log(value);
 	}

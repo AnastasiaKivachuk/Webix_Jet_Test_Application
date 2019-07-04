@@ -22,6 +22,7 @@ export default class ContactFormView extends JetView {
 			{
 				view: "form",
 				localId: "myform",
+				elementsConfig: {labelWidth: 150},
 				borderless: true,
 				elements: [{
 					paddingY: 50,
