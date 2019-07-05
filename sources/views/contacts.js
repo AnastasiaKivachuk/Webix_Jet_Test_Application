@@ -45,8 +45,7 @@ export default class ContactView extends JetView {
 					icon: "wxi-plus",
 					label: "Add contact",
 					click: () => {
-						this.setParam("mode", "Add");
-						this.show("contactform").then();
+						this.app.callEvent("showContactForm", ["Add"]);
 					}
 				}
 				]
@@ -64,14 +63,17 @@ export default class ContactView extends JetView {
 		});
 
 		this.on(this.app, "showContactInfoView", (id) => {
-			this.show("/top/contacts/contactinfo").then(() => {
-				this.setParam("id", id, true);
-			});
+			const list = this.$$("contactList");
+			this.show(`/top/contacts?id=${id}/contactinfo`);
+			if (!list.isEnabled()) {
+				list.enable();
+			}
 		});
 		this.on(this.app, "showContactForm", (mode) => {
-			this.show("contactform").then(() => {
-				this.setParam("mode", mode, true);
-			});
+			this.show(`contactform?mode=${mode}`);
+			if (mode === "Add") {
+				this.$$("contactList").disable();
+			}
 		});
 	}
 
