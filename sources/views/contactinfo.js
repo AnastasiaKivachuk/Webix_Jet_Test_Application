@@ -102,6 +102,8 @@ export default class ContactInfoView extends JetView {
 	}
 
 	getInfo(obj) {
+		const format = webix.i18n.longDateFormatStr;
+
 		return `
 		<div class="tempale">
 		<div class="сolumn">
@@ -115,7 +117,7 @@ export default class ContactInfoView extends JetView {
 		<div class="line"><span class="mdi mdi-briefcase item"></span><span class="item">${obj.Company || ""}</span></div>
 		</div>
 		<div class="сolumn">
-		<div class="line"><span class="webix_icon mdi mdi-calendar item"></span><span class="item">${obj.newBirthday || ""}</span></div>
+		<div class="line"><span class="webix_icon mdi mdi-calendar item"></span><span class="item">${format(obj.newBirthday) || ""}</span></div>
 		<div class="line"><span class="mdi mdi-map-marker item></span><span class="item">${obj.Address || ""}</span></div>
 		</div>
 		</div>`;

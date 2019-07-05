@@ -45,7 +45,7 @@ export default class ContactFormView extends JetView {
 						{
 							view: "datepicker",
 							label: "Joing date",
-							format: "%d %M %Y",
+							format: webix.i18n.longDateFormatStr,
 							name: "newStartDate",
 							invalidMessage: "Please select a date"
 						},
@@ -115,7 +115,7 @@ export default class ContactFormView extends JetView {
 						{
 							view: "datepicker",
 							label: "Birthday",
-							format: "%d %M %Y",
+							format: webix.i18n.longDateFormatStr,
 							name: "newBirthday",
 							invalidMessage: "Please select a date"
 						},
@@ -223,7 +223,7 @@ export default class ContactFormView extends JetView {
 					newStartDate: value => value <= new Date(),
 					StatusID: webix.rules.isNotEmpty,
 					Job: webix.rules.isNotEmpty,
-					newBirthday: value => value < new Date()
+					newBirthday: value => value < new Date() && value !== null
 				}
 			},
 			{}
