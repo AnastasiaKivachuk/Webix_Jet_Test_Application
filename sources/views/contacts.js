@@ -4,34 +4,53 @@ import {
 import {
 	Contacts
 } from "../models/contacts";
-import ContactInfoView from "./contactinfo";
-
 
 export default class ContactView extends JetView {
 	config() {
 		return {
-			cols: [
-				{
-					rows: [
-						{
-							view: "list",
-							localId: "contactList",
-							width: 300,
-							css: "webix_shadow_medium",
-							select: true,
-							template: this.getUser,
-							type: {
-								height: 60
-							},
-							on: {
-								onAfterSelect: (id) => {
-									this.setParam("id", id, true);
-								}
-							}
+			cols: [{
+				rows: [{
+					view: "text",
+					localId: "listInput",
+					placeholder: "Type something here",
+					on: {
+						onTimedKeyPress: () => {
+							let valueInput = this.$$("listInput").getValue().toLowerCase();
+							this.$$("contactList").filter(obj => obj.value.toLowerCase().indexOf(valueInput) !== -1 ||
+								obj.Job.toLowerCase().indexOf(valueInput) !== -1);
 						}
-					]
+					}
 				},
-				ContactInfoView
+				{
+					view: "list",
+					localId: "contactList",
+					width: 300,
+					css: "webix_shadow_medium",
+					select: true,
+					template: this.getUser,
+					type: {
+						height: 60
+					},
+					on: {
+						onAfterSelect: (id) => {
+							this.setParam("id", id, true);
+						}
+					}
+
+				},
+				{
+					view: "button",
+					type: "icon",
+					css: "webix_primary",
+					icon: "wxi-plus",
+					label: "Add contact",
+					click: () => {
+						this.app.callEvent("showContactForm", ["Add"]);
+					}
+				}
+				]
+			},
+			{$subview: true}
 			]
 		};
 	}
@@ -40,6 +59,21 @@ export default class ContactView extends JetView {
 	init() {
 		Contacts.waitData.then(() => {
 			this.$$("contactList").sync(Contacts);
+			this.show("/top/contacts/contactinfo").then();
+		});
+
+		this.on(this.app, "showContactInfoView", (id) => {
+			const list = this.$$("contactList");
+			this.show(`/top/contacts?id=${id}/contactinfo`);
+			if (!list.isEnabled()) {
+				list.enable();
+			}
+		});
+		this.on(this.app, "showContactForm", (mode) => {
+			this.show(`contactform?mode=${mode}`);
+			if (mode === "Add") {
+				this.$$("contactList").disable();
+			}
 		});
 	}
 
@@ -56,9 +90,10 @@ export default class ContactView extends JetView {
 		});
 	}
 
+
 	getUser(obj) {
 		return `<div class='contactItem'>
-					<image class="littleImg" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" /> 
+					<image class="littleImg" src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}" />
 					<div class="contactInfo">
 						<span class="contactName">${obj.FirstName} ${obj.LastName}</span>
 						<span class="contactJob">${obj.Job || ""}</span>
@@ -67,3 +102,4 @@ export default class ContactView extends JetView {
 					`;
 	}
 }
+
