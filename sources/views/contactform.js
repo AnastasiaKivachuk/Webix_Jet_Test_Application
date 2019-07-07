@@ -46,8 +46,8 @@ export default class ContactFormView extends JetView {
 						},
 						{
 							view: "datepicker",
-							label: _("Joing date"),
-							format: "%d %M %Y",
+							label: "Joing date",
+							format: webix.i18n.longDateFormatStr,
 							name: "newStartDate",
 							invalidMessage: "Please select a date"
 						},
@@ -116,8 +116,8 @@ export default class ContactFormView extends JetView {
 						},
 						{
 							view: "datepicker",
-							label: _("Birthday"),
-							format: "%d %M %Y",
+							label: "Birthday",
+							format: webix.i18n.longDateFormatStr,
 							name: "newBirthday",
 							invalidMessage: "Please select a date"
 						},
@@ -149,7 +149,6 @@ export default class ContactFormView extends JetView {
 													src: event.target.result
 												});
 												this.$$("myform").setValues({Photo: event.target.result}, true);
-												this.$$("preview").show();
 											};
 											reader
 												.readAsDataURL(
@@ -168,7 +167,6 @@ export default class ContactFormView extends JetView {
 										this.$$("preview").setValues({
 											src: "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"
 										});
-										this.$$("preview").show();
 									}
 								}
 								]
@@ -192,7 +190,6 @@ export default class ContactFormView extends JetView {
 							click: () => {
 								let id = this.getParam("id", true);
 								this.app.callEvent("showContactInfoView", [id]);
-								this.getRoot().getParentView().queryView("list").enable();
 							}
 						},
 						{
@@ -203,23 +200,24 @@ export default class ContactFormView extends JetView {
 							click: () => {
 								let formValue = this.$$("myform")
 									.getValues();
+
 								if (this.$$("myform").validate()) {
-									if (formValue.id) {
-										Contacts.updateItem(formValue
-											.id, formValue);
-									}
-									else {
-										Contacts.add(formValue);
-										let lastId = this.getRoot().getParentView().queryView("list").getLastId();
-										this.app.callEvent("showContactInfoView", [lastId]);
-										this.getRoot().getParentView().queryView("list").enable();
-									}
+									Contacts.waitSave(() => {
+										if (formValue.id) {
+											Contacts.updateItem(formValue
+												.id, formValue);
+										}
+										else {
+											Contacts.add(formValue);
+										}
+									}).then((obj) => {
+										this.app.callEvent("showContactInfoView", [obj.id]);
+									});
 								}
 							}
 						}
 					]
 				}
-
 				],
 				rules: {
 					FirstName: webix.rules.isNotEmpty,
@@ -227,8 +225,7 @@ export default class ContactFormView extends JetView {
 					newStartDate: value => value <= new Date(),
 					StatusID: webix.rules.isNotEmpty,
 					Job: webix.rules.isNotEmpty,
-					// Email: webix.rules.isEmail,
-					newBirthday: value => value < new Date()
+					newBirthday: value => value < new Date() && value !== null
 				}
 			},
 			{}
@@ -243,25 +240,19 @@ export default class ContactFormView extends JetView {
 		]).then(() => {
 			const mode = this.getParam("mode", true);
 			if (mode) {
-				this.$$("name").setHTML(`<H2 class="nameStyle">${mode} contact</H2>`);
+				this.$$("myform").clear();
+				this.$$("myform").clearValidation();
 
-				if (mode === "Add") {
-					this.$$("myform").setValues({});
-					this.$$("SaveAddBTN").setValue("Add");
-					this.$$("preview").setValues({src: "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
-					this.getRoot().getParentView().queryView("list").disable();
-				}
+				const id = this.getParam("id", true);
+				let contactItem = Contacts.getItem(id);
+
+				this.$$("name").setHTML(`<H2 class="nameStyle">${mode} contact</H2>`);
+				const photoEmptyProfile = "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg";
+				this.$$("SaveAddBTN").setValue(mode === "Add" ? "Add" : "Save");
+				this.$$("preview").setValues(mode === "Add" ? {src: photoEmptyProfile} : {src: contactItem.Photo || photoEmptyProfile});
 				if (mode === "Edit") {
-					const id = this.getParam("id", true);
-					let contactItem = Contacts.getItem(id);
-					this.$$("SaveAddBTN").setValue("Save");
-					if (id && Contacts.exists(id)) {
-						this.$$("myform").setValues(Contacts.getItem(id));
-						this.$$("preview").setValues({src: contactItem.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"});
-					}
-					else {
-						this.$$("myform").clear();
-						this.$$("myform").clearValidation();
+					if (contactItem) {
+						this.$$("myform").setValues(contactItem);
 					}
 				}
 			}
