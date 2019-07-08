@@ -39,6 +39,12 @@ export default {
 	Tomorrow: "Завтра",
 	"This week": "На этой неделе",
 	"This month": "В этом месяце",
-	"Due date": "Срок выполнения"
+	"Due date": "Срок выполнения",
+	"Activity type": "Тип активности",
+	Statuses: "Статусы",
+	"Add new": "Добавить",
+	Value: "Значение",
+	Icon: "Иконка"
+
 };
 

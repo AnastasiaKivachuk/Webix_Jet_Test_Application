@@ -30,14 +30,14 @@ export default class SettingsView extends JetView {
 				},
 				{
 					view: "template",
-					template: "Activity type",
+					template: _("Activity type"),
 					type: "header",
 					css: "webix_header app_header"
 				},
 				new CommonTable(this.app, "", ActivityType),
 				{
 					view: "template",
-					template: "Statuses",
+					template: _("Statuses"),
 					type: "header",
 					css: "webix_header app_header"
 				},
@@ -51,7 +51,6 @@ export default class SettingsView extends JetView {
 		const langs = this.app.getService("locale");
 		const value = this.getRoot().queryView({ name: "lang" }).getValue();
 		langs.setLang(value);
-		console.log(value);
 	}
 }
 

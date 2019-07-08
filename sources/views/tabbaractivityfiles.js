@@ -60,7 +60,12 @@ export default class TabbarActivityFiles extends JetView {
 								}],
 								options: ActivityType,
 								width: 300,
-								sort: "string"
+								sort: "string",
+								template: (obj, common, value, config) => {
+									const item = config.collection.data.find(ind => parseInt(ind.id)
+									=== parseInt(value));
+									return `<span class='webix_icon ${item[0].Icon}'>  ${item[0].Value}</span>`;
+								}
 							},
 							{
 								id: "DueNewDate",
