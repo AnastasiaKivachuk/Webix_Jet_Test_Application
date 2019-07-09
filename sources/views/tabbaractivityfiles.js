@@ -109,8 +109,8 @@ export default class TabbarActivityFiles extends JetView {
 										_("Edit"), "true");
 								}
 							},
-							on:{
-								onAfterFilter:() => {
+							on: {
+								onAfterFilter: () => {
 									const id = this.getParam("id", true);
 									this.$$("activities").filter(obj => obj.ContactID.toString() === id.toString(), "", true);
 								}
@@ -228,7 +228,7 @@ export default class TabbarActivityFiles extends JetView {
 		]).then(() => {
 			let id = this.getParam("id", true);
 			if (id && Contacts.exists(id)) {
-				webix.$$("activities").sync(Activity,  () => {
+				webix.$$("activities").sync(Activity, () => {
 					this.$$("activities").filterByAll();
 				});
 			}
