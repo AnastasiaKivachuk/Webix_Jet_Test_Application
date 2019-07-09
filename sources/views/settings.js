@@ -22,8 +22,8 @@ export default class SettingsView extends JetView {
 					view: "segmented",
 					label: _("Language"),
 					options: [
-						{ id: "en", value: "English" },
-						{ id: "ru", value: "Russian" }
+						{id: "en", value: "English"},
+						{id: "ru", value: "Russian"}
 					],
 					click: () => this.toggleLanguage(),
 					value: lang
