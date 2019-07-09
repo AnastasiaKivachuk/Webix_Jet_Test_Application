@@ -15,17 +15,10 @@ import ActivityForm from "./activityform";
 function getDates() {
 	let d = new Date();
 	let dates = {};
-	dates.currentYear = d.getFullYear();
-	dates.currentMonth = d.getMonth();
-	dates.currentDay = d.getDate();
-	dates.tomorrow = new Date(d.getTime() + 24 * 60 * 60 * 1000);
-	dates.currentDayOfWeek = d.getDay();
-	dates.firstDayOfWeek = new Date(d.getTime() - 24 * 60 * 60 *
-		1000 * dates.currentDayOfWeek);
-	dates.firstDayOfWeek.setHours(0, 0, 0, 0);
-	dates.lastDayOfWeek = new Date(d.getTime() + 24 * 60 * 60 *
-		1000 * (6 - dates.currentDayOfWeek));
-	dates.lastDayOfWeek.setHours(0, 0, 0, 0);
+	dates.currentDay = webix.Date.datePart(d);
+	dates.tomorrow = webix.Date.add(dates.currentDay, 1, "day", true);
+	dates.startCurrentWeek = webix.Date.weekStart(dates.currentDay);
+	dates.startCurrentMonth = webix.Date.monthStart(dates.currentDay);
 	return dates;
 }
 export default class ActivityView extends JetView {
@@ -193,9 +186,10 @@ export default class ActivityView extends JetView {
 					let filterData = parseInt(filter);
 					let state = item.State;
 					let date = item.DueNewDate;
-					let yearDate = date.getFullYear();
-					let monthDate = date.getMonth();
-					let dayDate = date.getDate();
+					let DateDay = webix.Date.datePart(date, true);
+					let startWeek = webix.Date.weekStart(DateDay);
+					let startMonth = webix.Date.monthStart(DateDay);
+
 					if (filterData === 1) return item;
 					else if (filterData === 2) {
 						return state === "Open" && date <
@@ -203,20 +197,15 @@ export default class ActivityView extends JetView {
 					}
 					else if (filterData === 3) return state === "Close";
 					else if (filterData === 4) {
-						return yearDate === dates.currentYear &&
-							monthDate === dates.currentMonth && dayDate === dates.currentDay &&
-							state === "Open";
+						return webix.Date.equal(dates.currentDay, DateDay) && state === "Open";
 					}
 					else if (filterData === 5) {
-						return yearDate === dates.tomorrow
-							.getFullYear() && monthDate === dates.tomorrow.getMonth() &&
-							dayDate === dates.tomorrow.getDate() && state === "Open";
+						return webix.Date.equal(dates.tomorrow, DateDay) && state === "Open";
 					}
 					else if (filterData === 6) {
-						return date >= dates.firstDayOfWeek && date <=
-							dates.lastDayOfWeek && state === "Open";
+						return webix.Date.equal(dates.startCurrentWeek, startWeek) && state === "Open";
 					}
-					return yearDate === dates.currentYear && monthDate === dates.currentMonth && state === "Open";
+					return webix.Date.equal(dates.startCurrentMonth, startMonth) && state === "Open";
 				}
 			}, {
 				getValue: node => node.getValue(),
