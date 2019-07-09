@@ -21,6 +21,7 @@ export default class CommonTable extends JetView {
 				scrollY: true,
 				scrollX: false,
 				select: true,
+				editaction: "dblclick",
 				columns: [{
 					id: "Value",
 					header: _("Value"),
@@ -49,7 +50,7 @@ export default class CommonTable extends JetView {
 					this._tdata.add({
 						Value: "New value",
 						Icon: "New Icon"
-					});
+					}, 0);
 				}
 			},
 			{
