@@ -205,18 +205,19 @@ export default class ActivityView extends JetView {
 					else if (filterData === 3) return state === "Close";
 					else if (filterData === 4) {
 						return yearDate === dates.currentYear &&
-							monthDate === dates.currentMonth && dayDate === dates.currentDay;
+							monthDate === dates.currentMonth && dayDate === dates.currentDay &&
+							state === "Open";
 					}
 					else if (filterData === 5) {
 						return yearDate === dates.tomorrow
 							.getFullYear() && monthDate === dates.tomorrow.getMonth() &&
-							dayDate === dates.tomorrow.getDate();
+							dayDate === dates.tomorrow.getDate() && state === "Open";
 					}
 					else if (filterData === 6) {
 						return date >= dates.firstDayOfWeek && date <=
-							dates.lastDayOfWeek;
+							dates.lastDayOfWeek && state === "Open";
 					}
-					return yearDate === dates.currentYear && monthDate === dates.currentMonth;
+					return yearDate === dates.currentYear && monthDate === dates.currentMonth && state === "Open";
 				}
 			}, {
 				getValue: node => node.getValue(),
