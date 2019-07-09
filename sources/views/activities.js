@@ -111,8 +111,8 @@ export default class ActivityView extends JetView {
 					}],
 					options: ActivityType,
 					template: (obj, common, value, config) => {
-						const item = config.collection.data.find(ind => parseInt(ind.id) === parseInt(value));
-						return `<span class='webix_icon ${item[0].Icon}'>  ${item[0].Value}</span>`;
+						const item = config.collection.getItem(value);
+						return `<span class='webix_icon ${item.Icon}'>  ${item.Value}</span>`;
 					},
 					width: 300,
 					sort: "string"
