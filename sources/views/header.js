@@ -4,7 +4,6 @@ export default class HeaderView extends JetView {
 	config() {
 		let header = {
 			type: "header",
-			template: "nice",
 			width: 500,
 			css: "webix_header app_header"
 		};

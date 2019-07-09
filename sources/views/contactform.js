@@ -10,9 +10,10 @@ import {
 
 export default class ContactFormView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [{
-				template: "Add contact",
+				template: _("Add contact"),
 				align: "left",
 				css: "nameStyle",
 				localId: "name",
@@ -21,6 +22,7 @@ export default class ContactFormView extends JetView {
 			{
 				view: "form",
 				localId: "myform",
+				elementsConfig: {labelWidth: 150},
 				borderless: true,
 				elements: [{
 					paddingY: 50,
@@ -31,14 +33,14 @@ export default class ContactFormView extends JetView {
 						borderless: true,
 						rows: [{
 							view: "text",
-							label: "First Name",
+							label: _("First Name"),
 							name: "FirstName",
 							css: "inputStyle",
 							invalidMessage: "Please write first name"
 						},
 						{
 							view: "text",
-							label: "Last Name",
+							label: _("Last Name"),
 							name: "LastName",
 							invalidMessage: "Please write last name"
 						},
@@ -50,7 +52,7 @@ export default class ContactFormView extends JetView {
 							invalidMessage: "Please select a date"
 						},
 						{
-							label: "Status",
+							label: _("Status"),
 							name: "StatusID",
 							view: "richselect",
 							invalidMessage: "Please select status",
@@ -64,25 +66,25 @@ export default class ContactFormView extends JetView {
 						},
 						{
 							view: "text",
-							label: "Job",
+							label: _("Job"),
 							name: "Job",
 							invalidMessage: "Please write job"
 						},
 						{
 							view: "text",
-							label: "Company",
+							label: _("Company"),
 							name: "Company",
 							invalidMessage: "Please write company"
 						},
 						{
 							view: "text",
-							label: "Website",
+							label: _("Website"),
 							name: "Website",
 							invalidMessage: "Please write website"
 						},
 						{
 							view: "text",
-							label: "Address",
+							label: _("Address"),
 							name: "Address",
 							invalidMessage: "Please write address"
 						}
@@ -108,7 +110,7 @@ export default class ContactFormView extends JetView {
 						},
 						{
 							view: "text",
-							label: "Phone",
+							label: _("Phone"),
 							name: "Phone",
 							invalidMessage: "Please write phone number"
 						},
@@ -132,7 +134,7 @@ export default class ContactFormView extends JetView {
 								rows: [{
 									view: "uploader",
 									accept: "image/jpeg, image/png",
-									value: "Upload file",
+									value: _("Upload file"),
 									localId: "Photo",
 									name: "records",
 									autowidth: true,
@@ -159,7 +161,7 @@ export default class ContactFormView extends JetView {
 								{
 									view: "button",
 									css: "webix_primary btnStyle",
-									label: "Delete",
+									label: _("Delete"),
 									autowidth: true,
 									click: () => {
 										this.$$("preview").setValues({
@@ -182,7 +184,7 @@ export default class ContactFormView extends JetView {
 					cols: [{},
 						{
 							view: "button",
-							value: "Cancel",
+							value: _("Cancel"),
 							autowidth: true,
 							css: "webix-primary",
 							click: () => {

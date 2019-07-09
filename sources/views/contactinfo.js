@@ -13,6 +13,7 @@ import {Activity} from "../models/Activity";
 
 export default class ContactInfoView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [
 				{
@@ -30,7 +31,7 @@ export default class ContactInfoView extends JetView {
 							type: "icon",
 							css: "webix_primary btnStyle",
 							icon: "wxi-trash",
-							label: "Delete",
+							label: _("Delete"),
 							autowidth: true,
 							click: () => {
 								let id = this.getParam("id", true);
@@ -64,7 +65,7 @@ export default class ContactInfoView extends JetView {
 							css: "webix_primary btnStyle",
 							type: "icon",
 							icon: "wxi-pencil",
-							label: "Edit",
+							label: _("Edit"),
 							autowidth: true,
 							click: () => {
 								this.app.callEvent("showContactForm", ["Edit"]);
@@ -95,20 +96,21 @@ export default class ContactInfoView extends JetView {
 			if (id && Contacts.exists(id)) {
 				const values = webix.copy(Contacts.getItem(id));
 				values.statusStr = Statuses.getItem(values.StatusID).Value;
+				values.statusIcon = Statuses.getItem(values.StatusID).Icon;
 				this.$$("name").setValues(values);
 				this.$$("infoContact").setValues(values);
 			}
 		});
 	}
 
+
 	getInfo(obj) {
 		const format = webix.i18n.longDateFormatStr;
-
 		return `
 		<div class="tempale">
 		<div class="сolumn">
 		<img class=img src="${obj.Photo || "https://img.lovepik.com/photo/40002/7350.jpg_wh860.jpg"}"/>
-		<span class="status">${obj.statusStr || ""}</span>
+		<span class="status webix_icon ${obj.statusIcon}">${obj.statusStr || ""}</span>
 		</div>
 		<div class="сolumn">
 		<div class="line"><span class="mdi mdi-email item"></span>${obj.Email || ""}</span></div>

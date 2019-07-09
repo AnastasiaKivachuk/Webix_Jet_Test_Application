@@ -13,6 +13,7 @@ import {
 
 export default class ActivityForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			view: "window",
 			locaIid: "windowForm",
@@ -34,20 +35,20 @@ export default class ActivityForm extends JetView {
 							{
 								view: "textarea",
 								name: "Details",
-								label: "Details",
+								label: _("Details"),
 								labelAlign: "right",
 								invalidMessage: "Please write details"
 							},
 							{
 								view: "richselect",
-								label: "Type",
+								label: _("Type"),
 								name: "TypeID",
 								invalidMessage: "Please select a type",
 								options: ActivityType
 							},
 							{
 								view: "richselect",
-								label: "Contact",
+								label: _("Contact"),
 								name: "ContactID",
 								localId: "ContactID",
 								invalidMessage: "Please select a contact",
@@ -57,14 +58,14 @@ export default class ActivityForm extends JetView {
 								cols: [
 									{
 										view: "datepicker",
-										label: "Date",
+										label: _("Date"),
 										format: "%d %M %Y",
 										name: "DueNewDate",
 										invalidMessage: "Please select a date"
 									},
 									{
 										view: "datepicker",
-										label: "Time",
+										label: _("Time"),
 										format: "%H:%i",
 										name: "DueNewTime",
 										timepicker: true,
@@ -75,7 +76,7 @@ export default class ActivityForm extends JetView {
 							},
 							{
 								view: "checkbox",
-								label: "Completed",
+								label: _("Completed"),
 								name: "State",
 								checkValue: "Close",
 								uncheckValue: "Open"
@@ -84,7 +85,7 @@ export default class ActivityForm extends JetView {
 								cols: [{
 									view: "button",
 									localId: "addBtn",
-									value: "Save",
+									value: _("Save"),
 									click: () => {
 										let formValue = this.$$("form").getValues();
 										if (this.$$("form").validate()) {
@@ -100,7 +101,7 @@ export default class ActivityForm extends JetView {
 								},
 								{
 									view: "button",
-									value: "Cansel",
+									value: _("Cancel"),
 									click: () => {
 										this.closeForm();
 									}

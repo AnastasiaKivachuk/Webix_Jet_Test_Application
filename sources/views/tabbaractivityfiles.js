@@ -18,6 +18,7 @@ import {
 
 export default class TabbarActivityFiles extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [{
 				borderless: true,
@@ -26,11 +27,11 @@ export default class TabbarActivityFiles extends JetView {
 				multiview: true,
 				options: [
 					{
-						value: "Activities",
+						value: _("Activities"),
 						id: "activitiesView"
 					},
 					{
-						value: "Files",
+						value: _("Files"),
 						id: "files"
 					}
 				]
@@ -59,7 +60,11 @@ export default class TabbarActivityFiles extends JetView {
 								}],
 								options: ActivityType,
 								width: 300,
-								sort: "string"
+								sort: "string",
+								template: (obj, common, value, config) => {
+									const item = config.collection.getItem(value);
+									return `<span class='webix_icon ${item.Icon}'>  ${item.Value}</span>`;
+								}
 							},
 							{
 								id: "DueNewDate",
@@ -90,7 +95,7 @@ export default class TabbarActivityFiles extends JetView {
 							onClick: {
 								removeBtn: (el, id) => {
 									webix.confirm({
-										text: "Do you still want to continue?",
+										text: _("Do you still want to continue?"),
 										callback: (result) => {
 											if (result) {
 												Activity.remove(id);
@@ -101,7 +106,13 @@ export default class TabbarActivityFiles extends JetView {
 								},
 								editBtn: (el, id) => {
 									this.form.showForm(Activity.getItem(id),
-										"Edit", "true");
+										_("Edit"), "true");
+								}
+							},
+							on: {
+								onAfterFilter: () => {
+									const id = this.getParam("id", true);
+									this.$$("activities").filter(obj => obj.ContactID.toString() === id.toString(), "", true);
 								}
 							}
 						},
@@ -110,10 +121,10 @@ export default class TabbarActivityFiles extends JetView {
 							type: "icon",
 							css: "webix_primary",
 							icon: "wxi-plus",
-							label: "Add activity",
+							label: _("Add activity"),
 							click: () => {
 								let id = this.getParam("id", true);
-								this.form.showForm({ContactID: id}, "Add", "true");
+								this.form.showForm({ContactID: id}, _("Add"), "true");
 							}
 
 						}]
@@ -131,7 +142,7 @@ export default class TabbarActivityFiles extends JetView {
 								columns: [
 									{
 										id: "name",
-										header: "Name",
+										header: _("Name"),
 										width: 300,
 										sort: "string",
 										fillspace: true
@@ -139,13 +150,13 @@ export default class TabbarActivityFiles extends JetView {
 									{
 										id: "lastModifiedDate",
 										format: webix.i18n.longDateFormatStr,
-										header: "Change date",
+										header: _("Change date"),
 										width: 300,
 										sort: "date"
 									},
 									{
 										id: "sizetext",
-										header: "Size",
+										header: _("Size"),
 										width: 300,
 										sort: "string"
 									},
@@ -157,7 +168,7 @@ export default class TabbarActivityFiles extends JetView {
 								onClick: {
 									removeBtn: (el, id) => {
 										webix.confirm({
-											text: "Do you still want to continue?",
+											text: _("Do you still want to continue?"),
 											callback: (result) => {
 												if (result) {
 													Records.remove(id);
@@ -171,7 +182,7 @@ export default class TabbarActivityFiles extends JetView {
 							},
 							{
 								view: "uploader",
-								label: "Upload file",
+								label: _("Upload file"),
 								name: "records",
 								type: "icon",
 								icon: "wxi-download",
@@ -217,8 +228,9 @@ export default class TabbarActivityFiles extends JetView {
 		]).then(() => {
 			let id = this.getParam("id", true);
 			if (id && Contacts.exists(id)) {
-				webix.$$("activities").sync(Activity);
-				Activity.data.filter(obj => obj.ContactID.toString() === id.toString());
+				webix.$$("activities").sync(Activity, () => {
+					this.$$("activities").filterByAll();
+				});
 			}
 		});
 	}
